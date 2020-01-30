@@ -12,8 +12,16 @@ from tinyimagenet import TinyImageNet, TinyImageNetVal
 
 ap = argparse.ArgumentParser()
 ap.add_argument('data', type=str, help='Path to data')
-ap.add_argument('--batch-size', type=int, default=32)
+ap.add_argument('--batch-size', type=int, default=64)
+ap.add_argument('--epochs', type=int, default=40)
+ap.add_argument('--lr', type=float, default=1e-3)
 args = ap.parse_args()
+
+
+print('LR:', args.lr)
+
+
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 
 transform = transforms.Compose([
@@ -27,6 +35,8 @@ train_set = TinyImageNet(args.data, transform=transform)
 valid_set = TinyImageNetVal(args.data, train_set.class_to_idx)
 train_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=True, num_workers=2)
 valid_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=False, num_workers=2)
+print('Train set size:', len(train_set))
+print('Num batches:', len(train_loader))
 
 
 class Net(nn.Module):
@@ -53,16 +63,16 @@ class Net(nn.Module):
         return x
 
 
-net = Net(num_classes=len(train_set.classes))
+net = Net(num_classes=len(train_set.classes)).to(device)
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9)
 
-for epoch in range(2):  # loop over the dataset multiple times
+for epoch in range(args.epochs):  # loop over the dataset multiple times
 
     running_loss = 0.0
     for i, data in enumerate(train_loader, 0):
         # get the inputs; data is a list of [inputs, labels]
-        inputs, labels = data
+        inputs, labels = data[0].to(device), data[1].to(device)
 
         # zero the parameter gradients
         optimizer.zero_grad()
@@ -75,7 +85,7 @@ for epoch in range(2):  # loop over the dataset multiple times
 
         # print statistics
         running_loss += loss.item()
-        interval = 200
+        interval = 500
         if i % interval == interval - 1:    # print every interval mini-batches
             print('[%d, %5d] loss: %.6f' %
                   (epoch + 1, i + 1, running_loss / interval))
@@ -88,11 +98,13 @@ correct = 0
 total = 0
 with torch.no_grad():
     for data in valid_loader:
-        images, labels = data
+        images, labels = data[0].to(device), data[1].to(device)
         outputs = net(images)
         _, predicted = torch.max(outputs.data, 1)
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
-print('Accuracy of the network on the 10000 test images: %d %%' % (
-    100 * correct / total))
+print('Accuracy of the network on the 10000 test images: %.2f %%' % (
+    100.0 * correct / total))
+if float(correct) / total < 0.01:
+    print('The trained model is not much better than chance!')
