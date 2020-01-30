@@ -8,6 +8,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 from tinyimagenet import TinyImageNet, TinyImageNetVal
+from utils import accuracy
 
 
 ap = argparse.ArgumentParser()
@@ -15,6 +16,7 @@ ap.add_argument('data', type=str, help='Path to data')
 ap.add_argument('--batch-size', type=int, default=64)
 ap.add_argument('--epochs', type=int, default=40)
 ap.add_argument('--lr', type=float, default=1e-3)
+ap.add_argument('--workers', type=int, default=4)
 args = ap.parse_args()
 
 
@@ -33,8 +35,8 @@ transform = transforms.Compose([
 
 train_set = TinyImageNet(args.data, transform=transform)
 valid_set = TinyImageNetVal(args.data, train_set.class_to_idx)
-train_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=True, num_workers=2)
-valid_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=False, num_workers=2)
+train_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.workers)
+valid_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=False, num_workers=args.workers)
 print('Train set size:', len(train_set))
 print('Num batches:', len(train_loader))
 
@@ -91,20 +93,25 @@ for epoch in range(args.epochs):  # loop over the dataset multiple times
                   (epoch + 1, i + 1, running_loss / interval))
             running_loss = 0.0
 
-print('Finished Training')
+print('Finished Training. Running validation...')
 
-
-correct = 0
-total = 0
+all_outputs = []
+all_labels = []
 with torch.no_grad():
     for data in valid_loader:
         images, labels = data[0].to(device), data[1].to(device)
         outputs = net(images)
-        _, predicted = torch.max(outputs.data, 1)
-        total += labels.size(0)
-        correct += (predicted == labels).sum().item()
+        all_outputs.append(outputs)
+        all_labels.append(labels)
+all_outputs = torch.cat(all_outputs)
+all_labels = torch.cat(all_labels)
+torch.save((all_outputs, all_labels), 'out.pt')
 
-print('Accuracy of the network on the 10000 test images: %.2f %%' % (
-    100.0 * correct / total))
-if float(correct) / total < 0.01:
+accuracy_top1, accuracy_top5 = accuracy(all_outputs, all_labels, topk=(1, 5))
+accuracy_top1, accuracy_top5 = accuracy_top1.item(), accuracy_top5.item()
+
+print('Accuracy of the network on the test set:')
+print('  top-1 accu: {:.2f}%'.format(accuracy_top1))
+print('  top-5 accu: {:.2f}%'.format(accuracy_top5))
+if accuracy_top1 < 1:
     print('The trained model is not much better than chance!')
