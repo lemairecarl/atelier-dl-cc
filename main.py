@@ -1,4 +1,5 @@
 import argparse
+import time
 
 import torch
 from torch.utils.data import DataLoader
@@ -69,6 +70,7 @@ net = Net(num_classes=len(train_set.classes)).to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9)
 
+time_train_begin = time.time()
 for epoch in range(args.epochs):  # loop over the dataset multiple times
 
     running_loss = 0.0
@@ -93,16 +95,19 @@ for epoch in range(args.epochs):  # loop over the dataset multiple times
                   (epoch + 1, i + 1, running_loss / interval))
             running_loss = 0.0
 
+time_train_end = time.time()
 print('Finished Training. Running validation...')
 
 all_outputs = []
 all_labels = []
+time_valid_begin = time.time()
 with torch.no_grad():
     for data in valid_loader:
         images, labels = data[0].to(device), data[1].to(device)
         outputs = net(images)
         all_outputs.append(outputs)
         all_labels.append(labels)
+time_valid_end = time.time()
 all_outputs = torch.cat(all_outputs)
 all_labels = torch.cat(all_labels)
 torch.save((all_outputs, all_labels), 'out.pt')
@@ -115,3 +120,6 @@ print('  top-1 accu: {:.2f}%'.format(accuracy_top1))
 print('  top-5 accu: {:.2f}%'.format(accuracy_top5))
 if accuracy_top1 < 1:
     print('The trained model is not much better than chance!')
+
+print('Training took:   {} min'.format((time_train_end - time_train_begin) / 60.0))
+print('Validating took: {} min'.format((time_valid_end - time_valid_begin) / 60.0))
