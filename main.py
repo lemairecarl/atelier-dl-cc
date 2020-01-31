@@ -22,10 +22,10 @@ args = ap.parse_args()
 
 
 print('LR:', args.lr)
-
-
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
+
+# Prepare data ======================================================
 
 transform = transforms.Compose([
     transforms.RandomAffine(degrees=20.0, scale=(0.8, 1.2), shear=20.0),
@@ -36,16 +36,25 @@ transform = transforms.Compose([
 
 train_set = TinyImageNet(args.data, transform=transform)
 valid_set = TinyImageNetVal(args.data, train_set.class_to_idx)
-train_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.workers)
-valid_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=False, num_workers=args.workers)
+train_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.workers,
+                          pin_memory=True)
+valid_loader = DataLoader(train_set, batch_size=args.batch_size, shuffle=False, num_workers=args.workers,
+                          pin_memory=True)
 print('Train set size:', len(train_set))
 print('Num batches:', len(train_loader))
 
+
+# Prepare model =====================================================
+
 net = resnet50(num_classes=len(train_set.classes)).to(device)
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9)
+optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay=1e-3)
+
+
+# Start training ====================================================
 
 time_train_begin = time.time()
+print('Training start:', time_train_begin)
 for epoch in range(args.epochs):  # loop over the dataset multiple times
 
     running_loss = 0.0
@@ -72,6 +81,9 @@ for epoch in range(args.epochs):  # loop over the dataset multiple times
 
 time_train_end = time.time()
 print('Finished Training. Running validation...')
+
+
+# Evaluate ==========================================================
 
 all_outputs = []
 all_labels = []

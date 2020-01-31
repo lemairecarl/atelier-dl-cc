@@ -3,7 +3,7 @@
 #SBATCH --gres=gpu:1         # Request GPU "generic resources"
 #SBATCH --cpus-per-task=6  # Cores proportional to GPUs: 6 on Cedar, 16 on Graham.
 #SBATCH --mem=30000M         # Memory proportional to GPUs: 32000 Cedar, 64000 Graham.
-#SBATCH --time=0-00:50     # DD-HH:MM:SS
+#SBATCH --time=0-2:10     # DD-HH:MM:SS
 
 cd $SLURM_TMPDIR
 
@@ -15,9 +15,8 @@ pip install --no-index torch torchvision
 mkdir $SLURM_TMPDIR/tin
 tar xf /home/lemc2220/projects/def-pmjodoin/lemc2220/data/tinyimagenet/tinyimagenet.tar -C $SLURM_TMPDIR/tin  # Transfer all data
 
-python ~/source/cours-ai-pmj/main.py $SLURM_TMPDIR/tin --workers 5
-EXIT_CODE=$?
+python ~/source/cours-ai-pmj/main.py $SLURM_TMPDIR/tin --workers 2
 
-cp out.pt ~/scratch
-
-exit $EXIT_CODE
+# EXIT_CODE=$?
+# cp out.pt ~/scratch
+# exit $EXIT_CODE
