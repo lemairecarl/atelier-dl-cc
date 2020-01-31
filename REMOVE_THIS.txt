@@ -1,3 +1,0 @@
-With default args:
-  top-1 accu: 22.89%
-  top-5 accu: 47.56%
