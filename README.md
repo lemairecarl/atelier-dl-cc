@@ -79,7 +79,9 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
 7. Vous pouvez maintenant lancer l'entraînement:
 
        python ~/atelier-dl-cc/main.py ./data
-       
+   
+   Si vous voyez des barres de progression apparaître, bravo! L'entraînement est lancé avec succès. Vous pouvez le stopper.
+   
 8. Effectuez les corrections nécessaires, s'il y a lieu. Notez les commandes, car elles iront dans le script à la
    section suivante.
 
