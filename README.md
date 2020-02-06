@@ -1,5 +1,12 @@
 # Atelier de Deep Learning sur Calcul Canada
 
+Cet atelier est basé sur les bonnes pratiques pour l'apprentissage machine sur les grappes de Calcul Canada. Ces bonnes
+pratiques sont élaborées en détail dans les références suivantes:
+
+* [Tutoriel Apprentissage Machine](https://docs.computecanada.ca/wiki/Tutoriel_Apprentissage_machine)
+* [Guide Apprentissage Machine](https://docs.computecanada.ca/wiki/AI_and_Machine_Learning/fr)
+* [Diaporama "Using Compute Canada Clusters for Machine Learning Research"](https://docs.google.com/presentation/d/1B978yexo6nBLAVusICLCs-QKwrK1v49T3E4GjNfFLgs/edit?usp=sharing)
+
 ## Se connecter au serveur
 
 Ouvrez un terminal. (Sur Windows, vous aurez besoin d'installer MobaXTerm.)
@@ -10,7 +17,7 @@ Dans cet environnement, vous pouvez:
 * Préparer vos données
 * Préparer votre code
 * Préparer votre script de soumission
-* Et tout autre opération, qui n'est pas l'entraînement.
+* Et toute autre opération, qui n'est pas l'entraînement.
       
 Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la prochaine section.
 
@@ -30,24 +37,88 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 4. Clonez le code dans votre `home` (`home/<username>`, c'est le dossier dans lequel vous arrivez lors d'une connexion
    `ssh`):
 
-       git clone XXXXXXXXX
+       git clone https://github.com/lemairecarl/atelier-dl-cc.git
 
 ## Concevoir la séquence de commandes
 
 À cette étape, il s'agit de trouver la bonne séquence de commandes qui permet d'effectuer correctement l'entraînement
 sans supervision. Une fois cette séquence trouvée, on en fera un script (section suivante).
 
-1. Soumission d'une tâche interactive. Demandez un GPU K20 et une heure:
+1. Soumission d'une tâche interactive. Demandez 2 CPUs, un GPU K20 et une heure:
 
        salloc --cpus-per-task=2 --gres=gpu:k20:1 --time=1:00:00
 
+   Vous êtes maintenant sur un noeud de calcul, dans une tâche interactive.
 
+2. Changez de dossier pour aller sur le stockage local au noeud de calcul:
+
+       cd $SLURM_TMPDIR
+
+3. Chargez les [modules](https://docs.computecanada.ca/wiki/Utiliser_des_modules) dont nous aurons besoin:
+
+       module load python/3.6 cuda cudnn
+       
+4. Créez l'environnement virtuel python, et activez-le:
+
+       virtualenv --no-download env
+       source env/bin/activate
+       
+5. Installez les paquets python nécessaires:
+
+       pip install --no-index -r ~/atelier-dl-cc/requirements.txt
+
+6. Transférez les données sur le noeud de calcul. Il faut transférer de "scratch" (ou "project") vers le noeud de calcul
+   un seul fichier, dans ce cas-ci, un `.tar`. Le fichier sera extrait sur le noeud de calcul, et non dans le stockage
+   partagé ("scratch" ou "project").
+   
+       mkdir data
+       cd data
+       cp /scratch/<username>/tinyimagenet.tar .
+       tar xf /scratch/<username>/tinyimagenet.tar
+
+7. Vous pouvez maintenant lancer l'entraînement:
+
+       python ~/atelier-dl-cc/main.py ./data
+       
+8. Effectuez les corrections nécessaires, s'il y a lieu. Notez les commandes, car elles iront dans le script à la
+   section suivante.
 
 ## Soumettre une tâche
 
-sbatch
+Créez le fichier `atelier.sh`. Vous pouvez créer le fichier sur votre laptop pour le transférer ensuite, ou vous pouvez
+le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y les lignes suivantes:
+
+```
+#!/bin/bash
+#SBATCH --account=def-mboisson
+#SBATCH --gres=gpu:k20:1
+#SBATCH --cpus-per-task=2
+#SBATCH --time=0-1:00:00  # DD-HH:MM:SS
+```
+Ces lignes vont remplacer les arguments à la commande `salloc` utilisée ci-haut. Vous devrez peut-être modifier le
+paramètre `--time`.
+
+Ensuite, ajoutez la séquence de commandes que vous avez validée dans la section prédécente.
+
+Enregistrez le fichier, et soumettez-le:
+
+    sbatch atelier.sh
+
+## Récupérer les sorties de la tâche
+
+Dans le répertoire où vous avez appelé `sbatch`, un nouveau fichier a été créé, au nom similaire à `slurm-XXXX.out`.
+Ce fichier contiendra la sortie standard (les _print_) et les erreurs déclenchées par le script de soumission et le
+le script d'entraînement (`main.py`).
+
+Pour voir la sortie, utilisez le programme `less`, qui vous permet d'afficher dans le terminal un fichier page par page:
+
+    less slurm-XXXX.out
+    
+Utiliser "Page Up" et "Page Down" pour naviguer, et "q" pour quitter.
 
 ## Suivre le déroulement
+
+**TODO**
 
 tmux? ajouter au script sbatch?
 
@@ -59,4 +130,4 @@ où `SLURM_TMPDIR=/localscratch/<username>.<job_id>.0`
 
     ssh -N -f -L localhost:6006:<noeud>:6006 <username>@helios3.calculquebec.ca
 
-## Récupérer les sorties de la tâche
+
