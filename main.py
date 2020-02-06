@@ -129,7 +129,7 @@ class TImageNetLightningModel(pl.LightningModule):
             momentum=self.hparams.momentum,
             weight_decay=self.hparams.weight_decay
         )
-        scheduler = lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.1, patience=10)
+        scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[10, 20], gamma=0.1)
         return [optimizer], [scheduler]
 
     @pl.data_loader
@@ -180,7 +180,7 @@ class TImageNetLightningModel(pl.LightningModule):
                             help='model architecture: ' +
                                  ' | '.join(MODEL_NAMES) +
                                  ' (default: resnet18)')
-        parser.add_argument('--epochs', default=90, type=int, metavar='N',
+        parser.add_argument('--epochs', default=30, type=int, metavar='N',
                             help='number of total epochs to run')
         parser.add_argument('--seed', type=int, default=42,
                             help='seed for initializing training. ')
@@ -227,12 +227,7 @@ def main(hparams):
         torch.manual_seed(hparams.seed)
         cudnn.deterministic = True
     trainer = pl.Trainer(
-        early_stop_callback=pl.callbacks.EarlyStopping(
-                monitor='val_loss',
-                patience=10,
-                verbose=True,
-                mode='min'
-            ),
+        early_stop_callback=False,
         default_save_path=hparams.save_path,
         gpus=hparams.gpus,
         max_epochs=hparams.epochs,

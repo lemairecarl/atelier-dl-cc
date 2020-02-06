@@ -7,6 +7,8 @@ pratiques sont élaborées en détail dans les références suivantes:
 * [Guide Apprentissage Machine](https://docs.computecanada.ca/wiki/AI_and_Machine_Learning/fr)
 * [Diaporama "Using Compute Canada Clusters for Machine Learning Research"](https://docs.google.com/presentation/d/1B978yexo6nBLAVusICLCs-QKwrK1v49T3E4GjNfFLgs/edit?usp=sharing)
 
+La présente version de l'atelier est conçue pour le cours IFT725 donné à l'Université de Sherbrooke à l'hiver 2020.
+
 ## Se connecter au serveur
 
 Ouvrez un terminal. (Sur Windows, vous aurez besoin d'installer MobaXTerm.)
@@ -92,7 +94,7 @@ le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y le
 
 ```
 #!/bin/bash
-#SBATCH --account=def-mboisson
+#SBATCH --account=def-mboisson  # valide seulement pour les participants de cet atelier
 #SBATCH --gres=gpu:k20:1
 #SBATCH --cpus-per-task=2
 #SBATCH --time=0-1:00:00  # DD-HH:MM:SS
@@ -101,6 +103,12 @@ Ces lignes vont remplacer les arguments à la commande `salloc` utilisée ci-hau
 paramètre `--time`.
 
 Ensuite, ajoutez la séquence de commandes que vous avez validée dans la section prédécente.
+
+Pour terminer, ajouter ces lignes:
+
+    OUTDIR=~/out/$SLURM_JOB_ID  # normalement, il faudrait mettre ceci sur l'espace "project"
+    mkdir -p $OUTDIR
+    cp -r lightning_logs $OUTDIR
 
 Enregistrez le fichier, et soumettez-le:
 
@@ -125,8 +133,10 @@ Utiliser "Page Up" et "Page Down" pour naviguer, et "q" pour quitter.
 tmux? ajouter au script sbatch?
 
     ssh <username>@helios3.calculquebec.ca
+    sq
     ssh <noeud>
-    tensorboard --logdir=$SLURM_TMPDIR/lightning_logs/version_4822 --host 0.0.0.0
+    SETUP VIRTUALENV
+    tensorboard --logdir=$SLURM_TMPDIR/lightning_logs/version_XXXX --host 0.0.0.0
 
 où `SLURM_TMPDIR=/localscratch/<username>.<job_id>.0`
 
