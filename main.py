@@ -19,6 +19,7 @@ import torchvision.models as models
 import torchvision.transforms as transforms
 
 import pytorch_lightning as pl
+import pytorch_lightning.callbacks
 
 from tinyimagenet import TinyImageNet, TinyImageNetVal
 
@@ -128,7 +129,7 @@ class TImageNetLightningModel(pl.LightningModule):
             momentum=self.hparams.momentum,
             weight_decay=self.hparams.weight_decay
         )
-        scheduler = lr_scheduler.ExponentialLR(optimizer, gamma=0.1)
+        scheduler = lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.1, patience=10)
         return [optimizer], [scheduler]
 
     @pl.data_loader
@@ -226,6 +227,12 @@ def main(hparams):
         torch.manual_seed(hparams.seed)
         cudnn.deterministic = True
     trainer = pl.Trainer(
+        early_stop_callback=pl.callbacks.EarlyStopping(
+                monitor='val_loss',
+                patience=10,
+                verbose=True,
+                mode='min'
+            ),
         default_save_path=hparams.save_path,
         gpus=hparams.gpus,
         max_epochs=hparams.epochs,
