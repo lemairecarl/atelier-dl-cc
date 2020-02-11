@@ -32,11 +32,10 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 
        rsync tinyimagenet.tar <username>@helios3.calculquebec.ca:
 
-3. Déplacez le fichier dans l'espace de stockage "scratch". (Note: normalement, il faudrait transférer dans l'espace
-   "projet", mais dans le cadre de cet atelier nous n'en avons pas.)
+3. Déplacez le fichier dans l'espace de stockage "project".
    
        ssh <username>@helios3.calculquebec.ca
-       mv tinyimagenet.tar /scratch/<username>
+       mv tinyimagenet.tar /project/atelier-ift725/<username>
 
 4. Clonez le code dans votre `home` (`home/<username>`, c'est le dossier dans lequel vous arrivez lors d'une connexion
    `ssh`):
@@ -71,14 +70,14 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
 
        pip install --no-index -r ~/atelier-dl-cc/requirements.txt
 
-6. Transférez les données sur le noeud de calcul. Il faut transférer de "scratch" (ou "project") vers le noeud de calcul
+6. Transférez les données sur le noeud de calcul. Il faut transférer de "project" vers le noeud de calcul
    un seul fichier, dans ce cas-ci, un `.tar`. Le fichier sera extrait sur le noeud de calcul, et non dans le stockage
-   partagé ("scratch" ou "project").
+   partagé.
    
        mkdir data
        cd data
-       cp /scratch/<username>/tinyimagenet.tar .
-       tar xf /scratch/<username>/tinyimagenet.tar
+       cp /project/atelier-ift725/<username>/tinyimagenet.tar .
+       tar xf tinyimagenet.tar
 
 7. Vous pouvez maintenant lancer l'entraînement:
 
@@ -99,7 +98,7 @@ le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y le
 #SBATCH --account=def-mboisson  # valide seulement pour les participants de cet atelier
 #SBATCH --gres=gpu:k20:1
 #SBATCH --cpus-per-task=2
-#SBATCH --time=0-1:00:00  # DD-HH:MM:SS
+#SBATCH --time=0-3:00:00  # DD-HH:MM:SS
 ```
 Ces lignes vont remplacer les arguments à la commande `salloc` utilisée ci-haut. Vous devrez peut-être modifier le
 paramètre `--time`.
@@ -108,7 +107,7 @@ Ensuite, ajoutez la séquence de commandes que vous avez validée dans la sectio
 
 Pour terminer, ajouter ces lignes:
 
-    OUTDIR=~/out/$SLURM_JOB_ID  # normalement, il faudrait mettre ceci sur l'espace "project"
+    OUTDIR=/project/atelier-ift725/<username>/out/$SLURM_JOB_ID
     mkdir -p $OUTDIR
     cp -r lightning_logs $OUTDIR
 
