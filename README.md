@@ -11,6 +11,8 @@ La présente version de l'atelier est conçue pour le cours IFT725 donné à l'U
 
 ## Se connecter au serveur
 
+Nous nous connecterons à [la grappe Hélios](https://docs.computecanada.ca/wiki/H%C3%A9lios), située à l'Université Laval, à Québec.
+
 Ouvrez un terminal. (Sur Windows, vous aurez besoin d'installer MobaXTerm.)
 
        ssh <username>@helios3.calculquebec.ca
@@ -128,18 +130,41 @@ Utiliser "Page Up" et "Page Down" pour naviguer, et "q" pour quitter.
 
 ## Suivre le déroulement
 
-**TODO**
+Cette section est facultative, mais recommandée.
 
-tmux? ajouter au script sbatch?
+### Se connecter au noeud de calcul
+
+Ouvrez un nouveau shell sur Hélios:
 
     ssh <username>@helios3.calculquebec.ca
     sq
-    ssh <noeud>
-    SETUP VIRTUALENV
-    tensorboard --logdir=$SLURM_TMPDIR/lightning_logs/version_XXXX --host 0.0.0.0
+    
+La liste de vos tâches en cours (ou en attente) s'affiche. Notez l'identificateur du noeud (colonne NODELIST), similaire
+à `helk20n15`. Ensuite utilisez cet identificateur pour vous connecter au noeud:
+    
+    ssh <id_noeud>
 
-où `SLURM_TMPDIR=/localscratch/<username>.<job_id>.0`
+### Vérifier que le GPU est utilisé
 
-    ssh -N -f -L localhost:6006:<noeud>:6006 <username>@helios3.calculquebec.ca
+Une fois connecté au noeud de calcul, exécutez:
 
+    watch nvidia-smi
+    
+Vérifiez que % d'utilisation ne reste pas à zéro.
 
+### Suivre les métriques avec _Tensorboard_
+
+Une fois connecté au noeud de calcul, rendez-vous dans le dossier suivant (remplacez les variables):
+
+    cd /localscratch/<username>.<job_id>.0
+    
+Ensuite:
+    
+    source env/bin/activate
+    tensorboard --logdir=lightning_logs --host 0.0.0.0
+
+Ensuite, sur votre ordinateur local, exécutez (remplacez les variables):
+
+    ssh -N -f -L localhost:6006:<id_noeud>:6006 <username>@helios3.calculquebec.ca
+
+Finalement, ouvrez votre navigateur internet à l'adresse `localhost:6006`.
