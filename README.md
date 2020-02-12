@@ -32,10 +32,10 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 
        rsync tinyimagenet.tar <username>@helios3.calculquebec.ca:
 
-3. Déplacez le fichier dans l'espace de stockage "project".
+3. Déplacez le fichier dans votre espace de stockage "project"<sup>[1](#footnote1)</sup>.
    
        ssh <username>@helios3.calculquebec.ca
-       mv tinyimagenet.tar /project/atelier-ift725/<username>
+       mv tinyimagenet.tar ~/project
 
 4. Clonez le code dans votre `home` (`home/<username>`, c'est le dossier dans lequel vous arrivez lors d'une connexion
    `ssh`):
@@ -76,7 +76,7 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
    
        mkdir data
        cd data
-       cp /project/atelier-ift725/<username>/tinyimagenet.tar .
+       cp ~/project/tinyimagenet.tar .
        tar xf tinyimagenet.tar
 
 7. Vous pouvez maintenant lancer l'entraînement:
@@ -107,7 +107,7 @@ Ensuite, ajoutez la séquence de commandes que vous avez validée dans la sectio
 
 Pour terminer, ajouter ces lignes:
 
-    OUTDIR=/project/atelier-ift725/<username>/out/$SLURM_JOB_ID
+    OUTDIR=~/project/out/$SLURM_JOB_ID
     mkdir -p $OUTDIR
     cp -r lightning_logs $OUTDIR
 
@@ -167,3 +167,10 @@ Ensuite, sur votre ordinateur local, exécutez (remplacez les variables):
     ssh -N -f -L localhost:6006:<id_noeud>:6006 <username>@helios3.calculquebec.ca
 
 Finalement, ouvrez votre navigateur internet à l'adresse `localhost:6006`.
+
+---
+
+### Notes
+
+1. <a name="footnote1"></a>Dans le cadre de cet atelier, votre stockage "project" est simplifié. Pour plus de détails,
+référez-vous à notre [documentation sur l'espace project](https://docs.computecanada.ca/wiki/Project_layout/fr).
