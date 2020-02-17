@@ -81,7 +81,8 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
 
 7. Vous pouvez maintenant lancer l'entraînement:
 
-       python ~/atelier-dl-cc/main.py $SLURM_TMPDIR/data
+       cd $SLURM_TMPDIR
+       python ~/atelier-dl-cc/main.py ./data
    
    Si vous voyez des barres de progression apparaître, bravo! L'entraînement est lancé avec succès. Vous pouvez le stopper.
    
@@ -99,12 +100,12 @@ le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y le
 #SBATCH --cpus-per-task=2
 #SBATCH --time=0-2:00:00  # DD-HH:MM:SS
 ```
-Ces lignes vont remplacer les arguments à la commande `salloc` utilisée ci-haut. Vous devrez peut-être modifier le
-paramètre `--time`.
+Ces lignes vont remplacer les arguments à la commande `salloc` utilisée ci-haut.
 
 Ensuite, ajoutez la séquence de commandes que vous avez validée dans la section prédécente.
 
-Pour terminer, ajouter ces lignes:
+Pour terminer, ajoutez les lignes suivantes. Elles servent à conserver les résultats de l'entraînement, qui autrement seraient
+effacées lors de la fin de la tâche.
 
     OUTDIR=~/project/out/$SLURM_JOB_ID
     mkdir -p $OUTDIR
@@ -113,6 +114,9 @@ Pour terminer, ajouter ces lignes:
 Enregistrez le fichier, et soumettez-le:
 
     sbatch atelier.sh
+
+Vous pouvez vérifier vos tâches actives avec la commande `sq`. Les tâches en attente ont le statut `PD` (pending), et
+les tâches en cours, `R` (running).
 
 ## Récupérer les sorties de la tâche
 
