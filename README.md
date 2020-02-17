@@ -74,14 +74,14 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
    un seul fichier, dans ce cas-ci, un `.tar`. Le fichier sera extrait sur le noeud de calcul, et non dans le stockage
    partagé.
    
-       mkdir data
+       mkdir data  # nous sommes toujours dans $SLURM_TMPDIR
        cd data
        cp ~/project/tinyimagenet.tar .
        tar xf tinyimagenet.tar
 
 7. Vous pouvez maintenant lancer l'entraînement:
 
-       python ~/atelier-dl-cc/main.py ./data
+       python ~/atelier-dl-cc/main.py $SLURM_TMPDIR/data
    
    Si vous voyez des barres de progression apparaître, bravo! L'entraînement est lancé avec succès. Vous pouvez le stopper.
    
@@ -95,10 +95,9 @@ le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y le
 
 ```
 #!/bin/bash
-#SBATCH --account=def-mboisson  # valide seulement pour les participants de cet atelier
 #SBATCH --gres=gpu:k20:1
 #SBATCH --cpus-per-task=2
-#SBATCH --time=0-3:00:00  # DD-HH:MM:SS
+#SBATCH --time=0-2:00:00  # DD-HH:MM:SS
 ```
 Ces lignes vont remplacer les arguments à la commande `salloc` utilisée ci-haut. Vous devrez peut-être modifier le
 paramètre `--time`.
@@ -109,7 +108,7 @@ Pour terminer, ajouter ces lignes:
 
     OUTDIR=~/project/out/$SLURM_JOB_ID
     mkdir -p $OUTDIR
-    cp -r lightning_logs $OUTDIR
+    cp -r lightning_logs/version*/* $OUTDIR
 
 Enregistrez le fichier, et soumettez-le:
 
