@@ -19,7 +19,7 @@ import torchvision.models as models
 import torchvision.transforms as transforms
 
 import pytorch_lightning as pl
-from pytorch_lightning.logging import CometLogger
+from pytorch_lightning.logging.comet import CometLogger
 
 from tinyimagenet import TinyImageNet, TinyImageNetVal
 
