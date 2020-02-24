@@ -7,14 +7,12 @@ import random
 from collections import OrderedDict
 
 import torch
-import torch.backends.cudnn as cudnn
 import torch.nn.functional as F
 import torch.nn.parallel
 import torch.optim as optim
 import torch.optim.lr_scheduler as lr_scheduler
 import torch.utils.data
 import torch.utils.data.distributed
-import torchvision.datasets as datasets
 import torchvision.models as models
 import torchvision.transforms as transforms
 
@@ -225,7 +223,7 @@ def main(hparams):
     if hparams.seed is not None:
         random.seed(hparams.seed)
         torch.manual_seed(hparams.seed)
-        cudnn.deterministic = True
+        #cudnn.deterministic = True
 
     comet_logger = CometLogger(
         api_key=os.environ["COMET_KEY"],
