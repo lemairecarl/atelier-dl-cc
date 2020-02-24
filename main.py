@@ -19,7 +19,7 @@ import torchvision.models as models
 import torchvision.transforms as transforms
 
 import pytorch_lightning as pl
-import pytorch_lightning.callbacks
+from pytorch_lightning.logging import CometLogger
 
 from tinyimagenet import TinyImageNet, TinyImageNetVal
 
@@ -226,7 +226,14 @@ def main(hparams):
         random.seed(hparams.seed)
         torch.manual_seed(hparams.seed)
         cudnn.deterministic = True
+
+    comet_logger = CometLogger(
+        api_key=os.environ["COMET_KEY"],
+        project_name="atelier-dl-cc"
+    )
+
     trainer = pl.Trainer(
+        logger=comet_logger,
         early_stop_callback=False,
         default_save_path=hparams.save_path,
         gpus=hparams.gpus,
