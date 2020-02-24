@@ -13,7 +13,7 @@ La présente version de l'atelier est conçue pour le cours IFT725 donné à l'U
 
 Nous nous connecterons à [la grappe Hélios](https://docs.computecanada.ca/wiki/H%C3%A9lios), située à l'Université Laval, à Québec.
 
-Ouvrez un terminal. (Sur Windows, vous aurez besoin d'installer MobaXTerm.)
+Ouvrez un terminal, et lancez la commande suivante:
 
        ssh <username>@helios3.calculquebec.ca
 
@@ -27,7 +27,7 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 
 ## Transférer des données et du code
 
-1. Téléchargez la bdd TinyImageNet à ce lien: https://drive.google.com/file/d/1g_MSfNMySQyhgqL8OIoP-nk3ogJCgWRM/view?usp=sharing
+1. Téléchargez la BDD TinyImageNet à ce lien: https://drive.google.com/file/d/1g_MSfNMySQyhgqL8OIoP-nk3ogJCgWRM/view?usp=sharing
 2. Transférez le fichier sur Hélios:
 
        rsync tinyimagenet.tar <username>@helios3.calculquebec.ca:
@@ -156,20 +156,37 @@ Vérifiez que % d'utilisation ne reste pas à zéro.
 
 ### Suivre les métriques avec _Tensorboard_
 
-Une fois connecté au noeud de calcul, rendez-vous dans le dossier suivant (remplacez les variables):
+Sur votre ordinateur local, exécutez (remplacez les variables):
+
+    ssh -N -f -L localhost:6006:<id_noeud>:6006 <username>@helios3.calculquebec.ca
+
+Vous devrez peut-être changer le port 6006 pour un autre si vous avez l'erreur `Address already in use`.
+
+Ensuite, connectez-vous au noeud de calcul, et rendez-vous dans le dossier suivant (remplacez les variables):
 
     cd /localscratch/<username>.<job_id>.0
     
 Ensuite:
     
     source env/bin/activate
-    tensorboard --logdir=lightning_logs --host 0.0.0.0
+    tensorboard --logdir=lightning_logs --host 0.0.0.0 --port 6006
 
-Ensuite, sur votre ordinateur local, exécutez (remplacez les variables):
-
-    ssh -N -f -L localhost:6006:<id_noeud>:6006 <username>@helios3.calculquebec.ca
+Remplacez le port 6006 selon ce que vous avez utilisé ci-haut. (Même chose pour l'étape suivante.)
 
 Finalement, ouvrez votre navigateur internet à l'adresse `localhost:6006`.
+
+## Réponses aux questions fréquentes
+
+* Dans `atelier.sh`, ne mettez pas de ligne `salloc`.
+* Lancez la commande `sbatch` sur un noeud de login, et non sur un noeud de calcul (obtenu avec un `salloc`).
+* Vous pouvez lister vos tâches actives avec la commande `sq`, et annuler une tâche avec la commande `scancel <job_id>`.
+    * "R" veut dire que la tâche est en exécution (running)
+    * "PD" veut dire que la tâche est en attente (pending)
+* Si vous obtenez l'erreur `Address already in use`, essayez de changer le port. Au lieu de 6006, essayez 6007, 6008,
+  etc. Ensuite, changez `--port 6006` dans la commande `tensorboard`.
+* La commande `ssh -N -f -L localhost ...` quitte tout de suite si elle fonctionne.
+* Si en ouvrant Tensorboard, vous avez l'avertissement `Tensorflow not found`, vous pouvez l'ignorer.
+* Si votre script `atelier.sh` contient moins de 10 commandes, relisez les instructions.
 
 ---
 
