@@ -175,6 +175,10 @@ Remplacez le port 6006 selon ce que vous avez utilisé ci-haut. (Même chose pou
 
 Finalement, ouvrez votre navigateur internet à l'adresse `localhost:6006`.
 
+## Recherche d'hyperparamètres
+
+Reférez-vous au README sur la branche [`hpsearch`](https://github.com/lemairecarl/atelier-dl-cc/tree/hpsearch).
+
 ## Réponses aux questions fréquentes
 
 * Dans `atelier.sh`, ne mettez pas de ligne `salloc`.
