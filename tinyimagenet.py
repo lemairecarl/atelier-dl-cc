@@ -30,7 +30,7 @@ class TinyImageNetVal(Dataset):
         self.loader = pil_loader
 
         if class_to_idx is None:
-            _, self.class_to_idx = TinyImageNet._find_classes(None, self.root)
+            _, self.class_to_idx = TinyImageNet._find_classes(None, root + '/train')
         else:
             self.class_to_idx = class_to_idx
         self.samples = None
