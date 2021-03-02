@@ -80,7 +80,7 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
    
        mkdir data  # nous sommes toujours dans $SLURM_TMPDIR
        cd data
-       cp ~/project/tinyimagenet.tar .
+       cp ~/scratch/tinyimagenet.tar .
        tar xf tinyimagenet.tar
 
 7. Vous pouvez maintenant lancer l'entraînement:
@@ -94,6 +94,8 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
    section suivante.
 
 ## Soumettre une tâche
+
+**TODO CETTE SECTION**
 
 Créez le fichier `atelier.sh`. Vous pouvez créer le fichier sur votre laptop pour le transférer ensuite, ou vous pouvez
 le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y les lignes suivantes:
@@ -140,13 +142,12 @@ Cette section est facultative, mais recommandée.
 
 ### Se connecter au noeud de calcul
 
-Ouvrez un nouveau shell sur Hélios:
+Ouvrez un nouveau shell sur la grappe:
 
-    ssh <username>@helios3.calculquebec.ca
+    ssh <username>@phoenix.calculquebec.cloud
     sq
     
-La liste de vos tâches en cours (ou en attente) s'affiche. Notez l'identificateur du noeud (colonne NODELIST), similaire
-à `helk20n15`. Ensuite utilisez cet identificateur pour vous connecter au noeud:
+La liste de vos tâches en cours (ou en attente) s'affiche. Notez l'identificateur du noeud (colonne NODELIST), de la forme `nodeX`. Ensuite utilisez cet identificateur pour vous connecter au noeud:
     
     ssh <id_noeud>
 
@@ -162,7 +163,7 @@ Vérifiez que % d'utilisation ne reste pas à zéro.
 
 Sur votre ordinateur local, exécutez (remplacez les variables):
 
-    ssh -N -f -L localhost:6006:<id_noeud>:6006 <username>@helios3.calculquebec.ca
+    ssh -N -f -L localhost:6006:<id_noeud>:6006 <username>@phoenix.calculquebec.cloud
 
 Vous devrez peut-être changer le port 6006 pour un autre si vous avez l'erreur `Address already in use`.
 
@@ -180,6 +181,8 @@ Remplacez le port 6006 selon ce que vous avez utilisé ci-haut. (Même chose pou
 Finalement, ouvrez votre navigateur internet à l'adresse `localhost:6006`.
 
 ## Recherche d'hyperparamètres
+
+**TODO**
 
 Reférez-vous au README sur la branche [`hpsearch`](https://github.com/lemairecarl/atelier-dl-cc/tree/hpsearch).
 
