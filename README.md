@@ -100,7 +100,7 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
 Créez le fichier `atelier.sh`. Vous pouvez créer le fichier sur votre laptop pour le transférer ensuite, ou vous pouvez
 le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y les lignes suivantes:
 
-```
+```bash
 #!/bin/bash
 #SBATCH --gres=gpu:k20:1
 #SBATCH --cpus-per-task=2
@@ -108,14 +108,36 @@ le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y le
 ```
 Ces lignes vont remplacer les arguments à la commande `salloc` utilisée ci-haut.
 
-Ensuite, ajoutez la séquence de commandes que vous avez validée dans la section prédécente.
+Ensuite, ajoutez la séquence de commandes que vous avez validée dans la section prédécente. Ça devrait ressembler à ceci:
+
+```bash
+cd $SLURM_TMPDIR
+module load python/3.8
+# TODO
+# virtualenv --no-download env
+# source env/bin/activate
+# pip install --no-index -r ~/atelier-dl-cc/requirements.txt
+mkdir data  # nous sommes toujours dans $SLURM_TMPDIR
+cd data
+cp ~/scratch/tinyimagenet.tar .
+tar xf tinyimagenet.tar
+
+cd $SLURM_TMPDIR
+
+# Démarre TensorBoard en arrière plan. Sera utile pour la suite
+tensorboard --logdir=lightning_logs/ --host 0.0.0.0 --port 6006 &
+
+python ~/atelier-dl-cc/main.py ./data
+```
 
 Pour terminer, ajoutez les lignes suivantes. Elles servent à conserver les résultats de l'entraînement, qui autrement seraient
 effacées lors de la fin de la tâche.
 
-    OUTDIR=~/project/out/$SLURM_JOB_ID
-    mkdir -p $OUTDIR
-    cp -r lightning_logs/version*/* $OUTDIR
+```bash
+OUTDIR=~/project/out/$SLURM_JOB_ID
+mkdir -p $OUTDIR
+cp -r lightning_logs/version*/* $OUTDIR
+```
 
 Enregistrez le fichier, et soumettez-le:
 
