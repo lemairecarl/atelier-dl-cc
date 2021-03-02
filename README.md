@@ -31,11 +31,13 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 2. Transférez le fichier sur Hélios:
 
        rsync tinyimagenet.tar <username>@helios3.calculquebec.ca:
+       
+   Le `:` à la fin de la ligne est important.
 
-3. Déplacez le fichier dans votre espace de stockage "project"<sup>[1](#footnote1)</sup>.
+3. Déplacez le fichier dans votre espace de stockage "scratch"<sup>[1](#footnote1)</sup>.
    
        ssh <username>@helios3.calculquebec.ca
-       mv tinyimagenet.tar ~/project
+       mv tinyimagenet.tar ~/scratch
 
 4. Clonez le code dans votre `home` (`home/<username>`, c'est le dossier dans lequel vous arrivez lors d'une connexion
    `ssh`):
@@ -47,9 +49,9 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 À cette étape, il s'agit de trouver la bonne séquence de commandes qui permet d'effectuer correctement l'entraînement
 sans supervision. Une fois cette séquence trouvée, on en fera un script (section suivante).
 
-1. Soumission d'une tâche interactive. Demandez 2 CPUs, un GPU K20 et une heure:
+1. Soumission d'une tâche interactive. Demandez 2 CPUs, 8GiB de RAM et un GPU, pour une heure:
 
-       salloc --cpus-per-task=2 --gres=gpu:k20:1 --time=1:00:00
+       salloc --cpus-per-task=2 --mem=8G --gres=gpu:1 --time=1:00:00
 
    Vous êtes maintenant sur un noeud de calcul, dans une tâche interactive.
 
@@ -59,10 +61,12 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
 
 3. Chargez les [modules](https://docs.computecanada.ca/wiki/Utiliser_des_modules) dont nous aurons besoin:
 
-       module load python/3.6 cuda cudnn
+       module load python/3.8
        
 4. Créez l'environnement virtuel python, et activez-le:
 
+   **TODO: où placer l'env?? requirements??**
+       
        virtualenv --no-download env
        source env/bin/activate
        
@@ -196,5 +200,5 @@ Reférez-vous au README sur la branche [`hpsearch`](https://github.com/lemaireca
 
 ### Notes
 
-1. <a name="footnote1"></a>Dans le cadre de cet atelier, votre stockage "project" est simplifié. Pour plus de détails,
+1. <a name="footnote1"></a>Dans le cadre de cet atelier, nous avons seulement accès à "scratch". Dans la vraie vie, vous aurez aussi "project"; ce dernier vous permettra de stocker des données à long terme, alors que "scratch" est purgé périodiquement. Pour plus de détails,
 référez-vous à notre [documentation sur l'espace project](https://docs.computecanada.ca/wiki/Project_layout/fr).
