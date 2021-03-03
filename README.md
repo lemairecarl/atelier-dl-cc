@@ -97,7 +97,7 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
 
 ## Soumettre une tâche
 
-Créez le fichier `atelier.sh`. Vous pouvez créer le fichier sur votre laptop pour le transférer ensuite, ou vous pouvez
+Créez le fichier `train.sh`. Vous pouvez créer le fichier sur votre laptop pour le transférer ensuite, ou vous pouvez
 le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y les lignes suivantes:
 
 ```bash
@@ -137,14 +137,14 @@ Pour terminer, ajoutez les lignes suivantes. Elles servent à conserver les rés
 effacées lors de la fin de la tâche.
 
 ```bash
-OUTDIR=~/projects/def-sponsor00/$USER/out_$SLURM_JOB_ID
+OUTDIR=~/projects/def-sponsor00/$USER/out/$SLURM_JOB_ID
 mkdir -p $OUTDIR
 cp -r lightning_logs/version*/* $OUTDIR
 ```
 
 Enregistrez le fichier, et soumettez-le:
 
-    sbatch atelier.sh
+    sbatch train.sh
 
 Vous pouvez vérifier vos tâches actives avec la commande `sq`. Les tâches en attente ont le statut `PD` (pending), et
 les tâches en cours, `R` (running).
@@ -189,17 +189,59 @@ Notes:
 
 Finalement, ouvrez votre navigateur internet à l'adresse `localhost:6006`.
 
-Note: si vous voulez lancer TensorBoard à partir d'un noeud de connexion, remplacez `<id_noeud>` par `localhost`.
-
 ## Recherche d'hyperparamètres
 
-**TODO**
+Nous allons faire une recherche d'hyperparamètres très simple.
 
-Reférez-vous au README sur la branche [`hpsearch`](https://github.com/lemairecarl/atelier-dl-cc/tree/hpsearch).
+### Soumettre la tâche
+
+Commençons un nouveau script à partir de l'ancien:
+
+    cp train.sh hpsearch.sh
+    
+Ouvrez le nouveau script, et remplacez les lignes de `python...` jusqu'à la fin, par ceci:
+
+    python ~/atelier-dl-cc/main.py ./data --save-path $OUTDIR --wd $HP_WEIGHT_DECAY
+    
+Note: ici, les fichier de sortie seront écrits directement dans le stockage "project".
+
+Finalement, vous pouvez lancer les différents essais comme suit:
+
+    HP_WEIGHT_DECAY=0.0001 sbatch hpsearch.sh
+    HP_WEIGHT_DECAY=0.001 sbatch hpsearch.sh
+    HP_WEIGHT_DECAY=0.01 sbatch hpsearch.sh
+
+### Comparer les choix d'hyperparamètres
+
+Sur le noeud de login, allez dans le dossier qui contient les expériences à comparer, et vérifiez que les fichiers
+`events.out.tfevents*` sont présents. Si `find` n'affiche rien, c'est mauvais signe.
+
+    cd ~/projects/def-sponsor00/$USER/out
+    find . -name 'events.out.tfevents*'
+
+Installez TensorBoard sur le noeud de login:
+
+    module load python/3.8
+    virtualenv tbenv
+    source tbenv/bin/activate
+    pip install tensorboard
+
+Lancez TensorBoard en spécifiant le bon dossier:
+
+    source tbenv/bin/activate
+    tensorboard --logdir=~/projects/def-sponsor00/$USER/out --host 0.0.0.0 --port 6006
+    
+Créez un tunnel entre votre ordinateur et le **noeud de connexion**:
+
+    ssh -N -f -L localhost:6006:localhost:6006 <username>@phoenix.calculquebec.cloud
+    
+Notez la différence avec la commande utilisée plus tôt: `localhost` au lieu de `<node_id>`.
+
+Vous pouvez finalement ouvrir votre navigateur à `localhost:6006`.
 
 ## Réponses aux questions fréquentes
 
-* Dans `atelier.sh`, ne mettez pas de ligne `salloc`.
+* Dans `train.sh`, ne mettez pas de ligne `salloc`.
 * Lancez la commande `sbatch` sur un noeud de login, et non sur un noeud de calcul (obtenu avec un `salloc`).
 * Vous pouvez lister vos tâches actives avec la commande `sq`, et annuler une tâche avec la commande `scancel <job_id>`.
     * "R" veut dire que la tâche est en exécution (running)
@@ -208,4 +250,4 @@ Reférez-vous au README sur la branche [`hpsearch`](https://github.com/lemaireca
   etc. Ensuite, changez `--port 6006` dans la commande `tensorboard`.
 * La commande `ssh -N -f -L localhost ...` quitte tout de suite si elle fonctionne.
 * Si en ouvrant Tensorboard, vous avez l'avertissement `Tensorflow not found`, vous pouvez l'ignorer.
-* Si votre script `atelier.sh` contient moins de 10 commandes, relisez les instructions.
+* Si votre script `train.sh` contient moins de 10 commandes, relisez les instructions.
