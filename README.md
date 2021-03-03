@@ -51,9 +51,9 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 À cette étape, il s'agit de trouver la bonne séquence de commandes qui permet d'effectuer correctement l'entraînement
 sans supervision. Une fois cette séquence trouvée, on en fera un script (section suivante).
 
-1. Soumission d'une tâche interactive. Demandez 2 CPUs, 8GiB de RAM et un GPU, pour une heure:
+1. Soumission d'une tâche interactive. Demandez 4 CPUs, 22GB de RAM et un GPU, pour une heure:
 
-       salloc --cpus-per-task=2 --mem=8G --gres=gpu:1 --time=1:00:00
+       salloc --cpus-per-task=4 --mem=22000M --gres=gpu:1 --time=1:00:00
 
    Vous êtes maintenant sur un noeud de calcul, dans une tâche interactive.
 
@@ -67,17 +67,17 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
        
 4. Créez l'environnement virtuel python, et activez-le:
 
-   **TODO: où placer l'env?? requirements??**
-       
        virtualenv --no-download env
        source env/bin/activate
+       
+   Note: c'est aussi possible de créer l'environnement dans votre home (`~`), même si c'est moins recommandé. L'avantage de le mettre dans le home est que vous pouvez créer l'environnement à partir d'un noeud de connexion; ce qui vous donne accès à internet, et donc à plus de paquets python.
        
 5. Installez les paquets python nécessaires:
 
        pip install --no-index -r ~/atelier-dl-cc/requirements.txt
 
 6. Transférez les données sur le noeud de calcul. Il faut transférer de "project" vers le noeud de calcul
-   un seul fichier, dans ce cas-ci, un `.tar`. Le fichier sera extrait sur le noeud de calcul, et non dans le stockage
+   un seul fichier, dans ce cas-ci, une archive `tar`. Le fichier sera extrait sur le noeud de calcul, et non dans le stockage
    partagé.
    
        mkdir data  # nous sommes toujours dans $SLURM_TMPDIR
@@ -92,7 +92,7 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
    
    Si vous voyez des barres de progression apparaître, bravo! L'entraînement est lancé avec succès. Vous pouvez le stopper.
    
-8. Effectuez les corrections nécessaires, s'il y a lieu. Notez les commandes, car elles iront dans le script à la
+8. Notez les commandes que vous avez utilisés ici, car elles iront dans le script à la
    section suivante.
 
 ## Soumettre une tâche
