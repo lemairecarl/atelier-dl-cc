@@ -34,10 +34,12 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
        
    Le `:` à la fin de la ligne est important.
 
-3. Déplacez le fichier dans votre espace de stockage "scratch"<sup>[1](#footnote1)</sup>.
+3. Déplacez le fichier dans votre espace de stockage "project"<sup>[1](#footnote1)</sup>.
    
        ssh <username>@helios3.calculquebec.ca
-       mv tinyimagenet.tar ~/scratch
+       mv tinyimagenet.tar ~/projects/def-sponsor00/$USER
+       
+   `def-sponsor00` correspond au nom du compte de votre superviseur. Pour l'atelier on utilise un compte bidon qui s'appelle `def-sponsor00`. Pour plus de détails, référez-vous à notre [documentation sur l'espace project](https://docs.computecanada.ca/wiki/Project_layout/fr).
 
 4. Clonez le code dans votre `home` (`home/<username>`, c'est le dossier dans lequel vous arrivez lors d'une connexion
    `ssh`):
@@ -80,7 +82,7 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
    
        mkdir data  # nous sommes toujours dans $SLURM_TMPDIR
        cd data
-       cp ~/scratch/tinyimagenet.tar .
+       cp ~/projects/def-sponsor00/$USER/tinyimagenet.tar .
        tar xf tinyimagenet.tar
 
 7. Vous pouvez maintenant lancer l'entraînement:
@@ -119,7 +121,7 @@ module load python/3.8
 # pip install --no-index -r ~/atelier-dl-cc/requirements.txt
 mkdir data  # nous sommes toujours dans $SLURM_TMPDIR
 cd data
-cp ~/scratch/tinyimagenet.tar .
+cp ~/projects/def-sponsor00/$USER/tinyimagenet.tar .
 tar xf tinyimagenet.tar
 
 cd $SLURM_TMPDIR
@@ -220,10 +222,3 @@ Reférez-vous au README sur la branche [`hpsearch`](https://github.com/lemaireca
 * La commande `ssh -N -f -L localhost ...` quitte tout de suite si elle fonctionne.
 * Si en ouvrant Tensorboard, vous avez l'avertissement `Tensorflow not found`, vous pouvez l'ignorer.
 * Si votre script `atelier.sh` contient moins de 10 commandes, relisez les instructions.
-
----
-
-### Notes
-
-1. <a name="footnote1"></a>Dans le cadre de cet atelier, nous avons seulement accès à "scratch". Dans la vraie vie, vous aurez aussi "project"; ce dernier vous permettra de stocker des données à long terme, alors que "scratch" est purgé périodiquement. Pour plus de détails,
-référez-vous à notre [documentation sur l'espace project](https://docs.computecanada.ca/wiki/Project_layout/fr).
