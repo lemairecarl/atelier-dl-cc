@@ -97,8 +97,6 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
 
 ## Soumettre une tâche
 
-**TODO CETTE SECTION**
-
 Créez le fichier `atelier.sh`. Vous pouvez créer le fichier sur votre laptop pour le transférer ensuite, ou vous pouvez
 le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y les lignes suivantes:
 
@@ -176,7 +174,7 @@ Vérifiez que % d'utilisation (`GPU-Util`) ne reste pas à zéro. Faites `Ctrl+C
 
 ## Suivre les métriques avec _Tensorboard_
 
-Vérifiez le nom du noeud sur lequel la tâche roule. Ça ressemblera à `nodeX`.
+Vérifiez le nom du noeud sur lequel la tâche roule. Ce sera sous la colonne NODELIST, et ça ressemblera à `nodeX`.
 
     sq
 
