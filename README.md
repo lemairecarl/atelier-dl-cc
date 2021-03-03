@@ -11,11 +11,11 @@ La présente version de l'atelier est conçue pour le cours IFT725 donné à l'U
 
 ## Se connecter au serveur
 
-Nous nous connecterons à [la grappe Hélios](https://docs.computecanada.ca/wiki/H%C3%A9lios), située à l'Université Laval, à Québec.
+[Calcul Canada met plusieurs grappes à la disposition des chercheurs canadiens.](https://www.computecanada.ca/page-daccueil-du-portail-de-recherche/acces-aux-ressources/ressources-disponibles/?lang=fr) Pour cet atelier, nous nous utiliserons plutôt une grappe virtuelle, qui sera détruite à la fin de la session.
 
 Ouvrez un terminal, et lancez la commande suivante:
 
-       ssh <username>@helios3.calculquebec.ca
+       ssh <username>@phoenix.calculquebec.cloud
 
 Dans cet environnement, vous pouvez:
 * Préparer vos données
@@ -30,23 +30,23 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 1. Téléchargez la BDD TinyImageNet à ce lien: https://drive.google.com/file/d/1g_MSfNMySQyhgqL8OIoP-nk3ogJCgWRM/view?usp=sharing
 2. Transférez le fichier sur Hélios:
 
-       rsync tinyimagenet.tar <username>@helios3.calculquebec.ca:
+       rsync tinyimagenet.tar <username>@phoenix.calculquebec.cloud:
        
-   Le `:` à la fin de la ligne est important.
+   Note: Le `:` à la fin de la ligne est important.
 
 3. Déplacez le fichier dans votre espace de stockage "project"<sup>[1](#footnote1)</sup>.
    
-       ssh <username>@helios3.calculquebec.ca
+       ssh <username>@phoenix.calculquebec.cloud
        mv tinyimagenet.tar ~/projects/def-sponsor00/$USER
        
-   `def-sponsor00` correspond au nom du compte de votre superviseur. Pour l'atelier on utilise un compte bidon qui s'appelle `def-sponsor00`. Pour plus de détails, référez-vous à notre [documentation sur l'espace project](https://docs.computecanada.ca/wiki/Project_layout/fr).
+   Note: `def-sponsor00` correspond au nom du compte de votre superviseur. Pour l'atelier on utilise un compte bidon qui s'appelle `def-sponsor00`. Pour plus de détails, référez-vous à notre [documentation sur l'espace project](https://docs.computecanada.ca/wiki/Project_layout/fr).
 
 4. Clonez le code dans votre `home` (`home/<username>`, c'est le dossier dans lequel vous arrivez lors d'une connexion
    `ssh`):
 
        git clone https://github.com/lemairecarl/atelier-dl-cc.git
 
-## Concevoir la séquence de commandes
+## Essayer avec une tâche interactive
 
 À cette étape, il s'agit de trouver la bonne séquence de commandes qui permet d'effectuer correctement l'entraînement
 sans supervision. Une fois cette séquence trouvée, on en fera un script (section suivante).
