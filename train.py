@@ -84,7 +84,7 @@ class TImageNetLightningModel(pl.LightningModule):
 
         return output
 
-    def validation_end(self, outputs):
+    def validation_epoch_end(self, outputs):
 
         tqdm_dict = {}
 
