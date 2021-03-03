@@ -57,13 +57,13 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
 
    Vous êtes maintenant sur un noeud de calcul, dans une tâche interactive.
 
-2. Changez de dossier pour aller sur le stockage local au noeud de calcul:
-
-       cd $SLURM_TMPDIR
-
-3. Chargez les [modules](https://docs.computecanada.ca/wiki/Utiliser_des_modules) dont nous aurons besoin:
+2. Chargez les [modules](https://docs.computecanada.ca/wiki/Utiliser_des_modules) dont nous aurons besoin:
 
        module load python/3.8
+       
+3. Changez de dossier pour aller sur le stockage local au noeud de calcul:
+
+       cd $SLURM_TMPDIR
        
 4. Créez l'environnement virtuel python, et activez-le:
 
@@ -88,7 +88,7 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
 7. Vous pouvez maintenant lancer l'entraînement:
 
        cd $SLURM_TMPDIR
-       python ~/atelier-dl-cc/main.py ./data
+       python ~/atelier-dl-cc/train.py ./data
    
    Si vous voyez des barres de progression apparaître, bravo! L'entraînement est lancé avec succès. Vous pouvez le stopper.
    
@@ -104,39 +104,42 @@ le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y le
 
 ```bash
 #!/bin/bash
-#SBATCH --gres=gpu:k20:1
-#SBATCH --cpus-per-task=2
-#SBATCH --time=0-2:00:00  # DD-HH:MM:SS
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=22000M
+#SBATCH --gres=gpu:1
+#SBATCH --time=00-01:00:00  # DD-HH:MM:SS
 ```
 Ces lignes vont remplacer les arguments à la commande `salloc` utilisée ci-haut.
 
 Ensuite, ajoutez la séquence de commandes que vous avez validée dans la section prédécente. Ça devrait ressembler à ceci:
 
 ```bash
-cd $SLURM_TMPDIR
 module load python/3.8
-# TODO
-# virtualenv --no-download env
-# source env/bin/activate
-# pip install --no-index -r ~/atelier-dl-cc/requirements.txt
+
+# Environnement python
+cd $SLURM_TMPDIR
+virtualenv --no-download env
+source env/bin/activate
+pip install --no-index -r ~/atelier-dl-cc/requirements.txt
+
+# Données
 mkdir data  # nous sommes toujours dans $SLURM_TMPDIR
 cd data
 cp ~/projects/def-sponsor00/$USER/tinyimagenet.tar .
 tar xf tinyimagenet.tar
+cd ..
 
-cd $SLURM_TMPDIR
-
-# Démarre TensorBoard en arrière plan. Sera utile pour la suite
+# Ajout qui sera utile pour la suite. Démarre TensorBoard en arrière plan.
 tensorboard --logdir=lightning_logs/ --host 0.0.0.0 --port 6006 &
 
-python ~/atelier-dl-cc/main.py ./data
+python ~/atelier-dl-cc/train.py ./data
 ```
 
 Pour terminer, ajoutez les lignes suivantes. Elles servent à conserver les résultats de l'entraînement, qui autrement seraient
 effacées lors de la fin de la tâche.
 
 ```bash
-OUTDIR=~/project/out/$SLURM_JOB_ID
+OUTDIR=~/projects/def-sponsor00/$USER/out_$SLURM_JOB_ID
 mkdir -p $OUTDIR
 cp -r lightning_logs/version*/* $OUTDIR
 ```
@@ -151,8 +154,7 @@ les tâches en cours, `R` (running).
 ## Récupérer les sorties de la tâche
 
 Dans le répertoire où vous avez appelé `sbatch`, un nouveau fichier a été créé, au nom similaire à `slurm-XXXX.out`.
-Ce fichier contiendra la sortie standard (les _print_) et les erreurs déclenchées par le script de soumission et le
-le script d'entraînement (`main.py`).
+Ce fichier contiendra tout ce qui se serait affiché dans le terminal si vous auriez exécuté la tâche en mode interactif.
 
 Pour voir la sortie, utilisez le programme `less`, qui vous permet d'afficher dans le terminal un fichier page par page:
 
@@ -160,47 +162,32 @@ Pour voir la sortie, utilisez le programme `less`, qui vous permet d'afficher da
     
 Utiliser "Page Up" et "Page Down" pour naviguer, et "q" pour quitter.
 
-## Suivre le déroulement
+## Vérifier que le GPU est utilisé
 
-Cette section est facultative, mais recommandée.
+Vérifiez d'abord quel est le _job ID_ de votre tâche:
 
-### Se connecter au noeud de calcul
-
-Ouvrez un nouveau shell sur la grappe:
-
-    ssh <username>@phoenix.calculquebec.cloud
     sq
+
+Ensuite, exécutez:
+
+    srun --jobid=<JOBID> --pty watch nvidia-smi
     
-La liste de vos tâches en cours (ou en attente) s'affiche. Notez l'identificateur du noeud (colonne NODELIST), de la forme `nodeX`. Ensuite utilisez cet identificateur pour vous connecter au noeud:
-    
-    ssh <id_noeud>
+Vérifiez que % d'utilisation (`GPU-Util`) ne reste pas à zéro. Faites `Ctrl+C` pour quitter.
 
-### Vérifier que le GPU est utilisé
+## Suivre les métriques avec _Tensorboard_
 
-Une fois connecté au noeud de calcul, exécutez:
+Vérifiez le nom du noeud sur lequel la tâche roule. Ça ressemblera à `nodeX`.
 
-    watch nvidia-smi
-    
-Vérifiez que % d'utilisation ne reste pas à zéro.
+    sq
 
-### Suivre les métriques avec _Tensorboard_
-
-Sur votre ordinateur local, exécutez (remplacez les variables):
+Sur votre ordinateur local, exécutez (en remplaçant les variables):
 
     ssh -N -f -L localhost:6006:<id_noeud>:6006 <username>@phoenix.calculquebec.cloud
 
-Vous devrez peut-être changer le port 6006 pour un autre si vous avez l'erreur `Address already in use`.
+Notes:
 
-Ensuite, connectez-vous au noeud de calcul, et rendez-vous dans le dossier suivant (remplacez les variables):
-
-    cd /localscratch/<username>.<job_id>.0
-    
-Ensuite:
-    
-    source env/bin/activate
-    tensorboard --logdir=lightning_logs --host 0.0.0.0 --port 6006
-
-Remplacez le port 6006 selon ce que vous avez utilisé ci-haut. (Même chose pour l'étape suivante.)
+* Cette commande ne retourne rien si tout se passe bien.
+* Vous devrez peut-être changer le port 6006 pour un autre si vous avez l'erreur `Address already in use`.
 
 Finalement, ouvrez votre navigateur internet à l'adresse `localhost:6006`.
 
