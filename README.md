@@ -193,7 +193,7 @@ Finalement, ouvrez votre navigateur internet à l'adresse `localhost:6006`.
 
 Nous allons faire une recherche d'hyperparamètres très simple.
 
-### Soumettre la tâche
+### Soumettre les tâches
 
 Commençons un nouveau script à partir de l'ancien:
 
