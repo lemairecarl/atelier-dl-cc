@@ -152,7 +152,7 @@ class TImageNetLightningModel(pl.LightningModule):
             dataset=train_set,
             batch_size=self.hparams.batch_size,
             shuffle=(train_sampler is None),
-            num_workers=0,
+            num_workers=4,
             sampler=train_sampler
         )
         return train_loader
@@ -169,7 +169,7 @@ class TImageNetLightningModel(pl.LightningModule):
             valid_set,
             batch_size=self.hparams.batch_size,
             shuffle=False,
-            num_workers=0,
+            num_workers=4,
         )
         return val_loader
 
