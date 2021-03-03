@@ -189,6 +189,8 @@ Notes:
 
 Finalement, ouvrez votre navigateur internet à l'adresse `localhost:6006`.
 
+Note: si vous voulez lancer TensorBoard à partir d'un noeud de connexion, remplacez `<id_noeud>` par `localhost`.
+
 ## Recherche d'hyperparamètres
 
 **TODO**
