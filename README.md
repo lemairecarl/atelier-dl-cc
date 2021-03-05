@@ -11,7 +11,7 @@ La présente version de l'atelier est conçue pour le cours IFT780 donné à l'U
 
 ## Se connecter au serveur
 
-[Calcul Canada met plusieurs grappes à la disposition des chercheurs canadiens.](https://www.computecanada.ca/page-daccueil-du-portail-de-recherche/acces-aux-ressources/ressources-disponibles/?lang=fr) Pour cet atelier, nous nous utiliserons plutôt une grappe virtuelle, qui sera détruite à la fin de la session.
+[Calcul Canada met plusieurs grappes à la disposition des chercheurs canadiens.](https://www.computecanada.ca/page-daccueil-du-portail-de-recherche/acces-aux-ressources/ressources-disponibles/?lang=fr) Pour cet atelier, nous nous utiliserons une grappe virtuelle, qui sera détruite à la fin de la session. Cette grappe virtuelle offre une expérience pratiquement identique à celle des grappes réelles.
 
 * **Sous Windows:**
     * [Téléchargez MobaXterm ici](https://mobaxterm.mobatek.net/)
