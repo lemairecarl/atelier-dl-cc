@@ -239,7 +239,7 @@ Notez la différence avec la commande utilisée plus tôt: `localhost` au lieu d
 
 Vous pouvez finalement ouvrir votre navigateur à `localhost:6006`.
 
-## Réponses aux questions fréquentes
+## FAQ
 
 * Dans `train.sh`, ne mettez pas de ligne `salloc`.
 * Lancez la commande `sbatch` sur un noeud de login, et non sur un noeud de calcul (obtenu avec un `salloc`).
