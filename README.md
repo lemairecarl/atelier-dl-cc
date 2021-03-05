@@ -13,11 +13,15 @@ La présente version de l'atelier est conçue pour le cours IFT780 donné à l'U
 
 [Calcul Canada met plusieurs grappes à la disposition des chercheurs canadiens.](https://www.computecanada.ca/page-daccueil-du-portail-de-recherche/acces-aux-ressources/ressources-disponibles/?lang=fr) Pour cet atelier, nous nous utiliserons plutôt une grappe virtuelle, qui sera détruite à la fin de la session.
 
-Ouvrez un terminal, et lancez la commande suivante:
+* **Sous Windows:**
+    * [Téléchargez MobaXterm ici](https://mobaxterm.mobatek.net/)
+    * Pour vous connecter à un serveur auquel vous ne vous êtes pas connecté auparavant : sous Sessions->New session, sélectionnez SSH puis entrez l'adresse du serveur (`phoenix.calculquebec.cloud`) et votre nom d'utilisateur (s'il y a lieu, cochez Specify username). Cliquez sur OK. MobaXTerm enregistre ces renseignements pour les connexions ultérieures au serveur et établit la connexion SSH.
+
+* **Sous Linux/MacOS:** Ouvrez un terminal, et lancez la commande suivante:
 
        ssh <username>@phoenix.calculquebec.cloud
 
-Dans cet environnement, vous pouvez:
+Une fois connecté au serveur, vous pouvez:
 * Préparer vos données
 * Préparer votre code
 * Préparer votre script de soumission
