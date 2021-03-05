@@ -30,7 +30,7 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 1. Téléchargez la BDD TinyImageNet à ce lien: https://drive.google.com/file/d/1g_MSfNMySQyhgqL8OIoP-nk3ogJCgWRM/view?usp=sharing
 2. Transférez le fichier sur Hélios:
 
-       rsync tinyimagenet.tar <username>@phoenix.calculquebec.cloud:
+       scp tinyimagenet.tar <username>@phoenix.calculquebec.cloud:
        
    Note: Le `:` à la fin de la ligne est important.
 
