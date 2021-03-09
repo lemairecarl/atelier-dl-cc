@@ -9,7 +9,9 @@ pratiques sont élaborées en détail dans les références suivantes:
 
 La présente version de l'atelier est conçue pour le cours IFT780 donné à l'Université de Sherbrooke à l'hiver 2021.
 
-## Se connecter au serveur
+## 1. Préparation
+
+### Se connecter au serveur
 
 [Calcul Canada met plusieurs grappes à la disposition des chercheurs canadiens.](https://www.computecanada.ca/page-daccueil-du-portail-de-recherche/acces-aux-ressources/ressources-disponibles/?lang=fr) Pour cet atelier, nous nous utiliserons une grappe virtuelle, qui sera détruite à la fin de la session. Cette grappe virtuelle offre une expérience pratiquement identique à celle des grappes réelles.
 
@@ -29,7 +31,7 @@ Une fois connecté au serveur, vous pouvez:
       
 Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la prochaine section.
 
-## Transférer des données et du code
+### Transférer des données et du code
 
 1. Téléchargez la BDD TinyImageNet à ce lien: https://drive.google.com/file/d/1g_MSfNMySQyhgqL8OIoP-nk3ogJCgWRM/view?usp=sharing
 2. Transférez le fichier sur Hélios:
@@ -50,7 +52,7 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 
        git clone https://github.com/lemairecarl/atelier-dl-cc.git
 
-## Essayer avec une tâche interactive
+## 2. Essayer avec une tâche interactive
 
 À cette étape, il s'agit de trouver la bonne séquence de commandes qui permet d'effectuer correctement l'entraînement
 sans supervision. Une fois cette séquence trouvée, on en fera un script (section suivante).
@@ -99,7 +101,7 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
 8. Notez les commandes que vous avez utilisés ici, car elles iront dans le script à la
    section suivante.
 
-## Soumettre une tâche
+## 3. Soumettre une tâche
 
 Créez le fichier `train.sh`. Vous pouvez créer le fichier sur votre laptop pour le transférer ensuite, ou vous pouvez
 le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y les lignes suivantes:
@@ -153,7 +155,7 @@ Enregistrez le fichier, et soumettez-le:
 Vous pouvez vérifier vos tâches actives avec la commande `sq`. Les tâches en attente ont le statut `PD` (pending), et
 les tâches en cours, `R` (running).
 
-## Récupérer les sorties de la tâche
+### Récupérer les sorties de la tâche
 
 Dans le répertoire où vous avez appelé `sbatch`, un nouveau fichier a été créé, au nom similaire à `slurm-XXXX.out`.
 Ce fichier contiendra tout ce qui se serait affiché dans le terminal si vous auriez exécuté la tâche en mode interactif.
@@ -164,7 +166,7 @@ Pour voir la sortie, utilisez le programme `less`, qui vous permet d'afficher da
     
 Utiliser "Page Up" et "Page Down" pour naviguer, et "q" pour quitter.
 
-## Vérifier que le GPU est utilisé
+### Vérifier que le GPU est utilisé
 
 Vérifiez d'abord quel est le _job ID_ de votre tâche:
 
@@ -176,7 +178,7 @@ Ensuite, exécutez:
     
 Vérifiez que % d'utilisation (`GPU-Util`) ne reste pas à zéro. Faites `Ctrl+C` pour quitter.
 
-## Suivre les métriques avec _Tensorboard_
+### Suivre les métriques avec _Tensorboard_
 
 Vérifiez le nom du noeud sur lequel la tâche roule. Ce sera sous la colonne NODELIST, et ça ressemblera à `nodeX`.
 
@@ -193,7 +195,7 @@ Notes:
 
 Finalement, ouvrez votre navigateur internet à l'adresse `localhost:6006`.
 
-## Recherche d'hyperparamètres
+## 4. Recherche d'hyperparamètres
 
 Nous allons faire une recherche d'hyperparamètres très simple.
 
@@ -205,7 +207,7 @@ Commençons un nouveau script à partir de l'ancien:
     
 Ouvrez le nouveau script, et remplacez les lignes de `python...` jusqu'à la fin, par ceci:
 
-    python ~/atelier-dl-cc/main.py ./data --save-path $OUTDIR --wd $HP_WEIGHT_DECAY
+    python ~/atelier-dl-cc/main.py ./data --save-path $OUTDIR --epochs 10 --wd $HP_WEIGHT_DECAY
     
 Note: ici, les fichier de sortie seront écrits directement dans le stockage "project".
 
