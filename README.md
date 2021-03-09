@@ -148,7 +148,7 @@ mkdir -p $OUTDIR
 cp -r lightning_logs/version*/* $OUTDIR
 ```
 
-Enregistrez le fichier, et soumettez-le:
+Enregistrez le fichier, et soumettez-le. **Note: sbatch doit toujours être appelé à partir d'un noeud de connexion (login).**
 
     sbatch train.sh
 
@@ -184,7 +184,7 @@ Vérifiez le nom du noeud sur lequel la tâche roule. Ce sera sous la colonne NO
 
     sq
 
-Sur votre ordinateur local, exécutez (en remplaçant les variables):
+Ouvrez un nouvel onglet de terminal local, et exécutez ce qui suit (en remplaçant les variables). N'exécutez pas cette commande dans votre session ssh sur phoenix, mais bien dans un terminal local sur votre ordinateur. Il suffit normalement d'ouvrir un nouvel onglet.
 
     ssh -N -f -L localhost:6006:<id_noeud>:6006 <username>@phoenix.calculquebec.cloud
 
@@ -237,7 +237,7 @@ Lancez TensorBoard en spécifiant le bon dossier:
     source tbenv/bin/activate
     tensorboard --logdir=~/projects/def-sponsor00/$USER/out --host 0.0.0.0 --port 6006
     
-Créez un tunnel entre votre ordinateur et le **noeud de connexion**:
+Créez un tunnel entre votre ordinateur et le **noeud de connexion**. Comme auparavant, exécutez cette commande dans un nouvel onglet de terminal local.
 
     ssh -N -f -L localhost:6006:localhost:6006 <username>@phoenix.calculquebec.cloud
     
