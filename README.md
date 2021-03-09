@@ -36,14 +36,14 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 1. Téléchargez la BDD TinyImageNet à ce lien: https://drive.google.com/file/d/1g_MSfNMySQyhgqL8OIoP-nk3ogJCgWRM/view?usp=sharing
 2. Transférez le fichier sur Hélios:
 
-       scp tinyimagenet.tar <username>@phoenix.calculquebec.cloud:
+       scp tinyimagenet.tar <username>@phoenix.calculquebec.cloud:projects/def-sponsor00/<username>
        
    Note: Le `:` à la fin de la ligne est important.
 
 3. Déplacez le fichier dans votre espace de stockage "project"<sup>[1](#footnote1)</sup>.
    
        ssh <username>@phoenix.calculquebec.cloud
-       mv tinyimagenet.tar ~/projects/def-sponsor00/$USER
+       (plus necessaire) mv tinyimagenet.tar ~/projects/def-sponsor00/$USER
        
    Note: `def-sponsor00` correspond au nom du compte de votre superviseur. Pour l'atelier on utilise un compte bidon qui s'appelle `def-sponsor00`. Pour plus de détails, référez-vous à notre [documentation sur l'espace project](https://docs.computecanada.ca/wiki/Project_layout/fr).
 
