@@ -199,7 +199,7 @@ Vérifiez que % d'utilisation (`GPU-Util`) ne reste pas à zéro. Faites `Ctrl+C
 2. Lancez TensorBoard
 
        source env/bin/activate  # si pas déja fait
-       tensorboard --logdir projects/def-sponsor00/$USER/out --host 0.0.0.0 --port 0
+       tensorboard --logdir ~/projects/def-sponsor00/$USER/out --host 0.0.0.0 --port 0
 
    Notez le port affiché par TensorBoard:
    
