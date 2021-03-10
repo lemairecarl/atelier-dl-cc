@@ -220,13 +220,9 @@ Commençons un nouveau script à partir de l'ancien:
 
     cp train.sh hpsearch.sh
     
-Ouvrez le nouveau script, et remplacez les lignes de `tensorboard...` jusqu'à la fin, par ceci:
+Ouvrez le nouveau script, faites l'ajout suivant à la ligne `python...`:
 
-    tensorboard --logdir=~/projects/def-sponsor00/$USER/out --host 0.0.0.0 --port 0 &
-    OUTDIR=~/projects/def-sponsor00/$USER/out/$SLURM_JOB_ID
     python ~/atelier-dl-cc/train.py ./data --save-path $OUTDIR --epochs 10 --wd $HP_WEIGHT_DECAY
-    
-Note: ici, les fichier de sortie seront écrits directement dans le stockage "project".
 
 Finalement, vous pouvez lancer les différents essais comme suit:
 
@@ -242,18 +238,7 @@ Finalement, vous pouvez lancer les différents essais comme suit:
        cd ~/projects/def-sponsor00/$USER/out
        find . -name 'events.out.tfevents*'
 
-2. Lancez TensorBoard (utilisez l'environnement python fait précédemment):
-
-       source env/bin/activate  # si pas déja fait
-       tensorboard --logdir projects/def-sponsor00/$USER/out --host 0.0.0.0 --port 0
-
-   Notez le port affiché par TensorBoard.
-
-3. Dans un nouvel onglet **local**, exécutez ce qui suit (remplacez `PORT`):
-
-       ssh -N -f -L localhost:PORT:login1:PORT <username>@phoenix.calculquebec.cloud
-       
-4. Vous pouvez ouvrir votre navigateur web à `localhost:PORT`.
+2. Utilisez TensorBoard pour faire une comparaison visuelle.
 
 ## Remarques
 
