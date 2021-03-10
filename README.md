@@ -35,15 +35,19 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 
 1. Téléchargez la BDD TinyImageNet à ce lien: https://drive.google.com/file/d/1g_MSfNMySQyhgqL8OIoP-nk3ogJCgWRM/view?usp=sharing
 2. Transférez le fichier sur Hélios:
-
-       scp tinyimagenet.tar <username>@phoenix.calculquebec.cloud:projects/def-sponsor00/<username>
+      * **Sous Windows avec MobaXterm:** Vous devriez voir un onglet "sftp" à gauche du terminal. Les fichiers sur le serveur s'affichent à cet endroit. Pour le fichier, faites simplement un glisser-déposer (drag and drop) dans cette zone.
+      * **Sous Linux/MacOS:** Dans un terminal **sur votre ordinateur (pas sur le serveur)**, exécutez ce qui suit:
+       
+       scp tinyimagenet.tar <username>@phoenix.calculquebec.cloud:
        
    Note: Le `:` à la fin de la ligne est important.
+   
+3. Assurez-vous que le fichier a bien été transféré en faisant un `ls` sur le serveur.
 
 3. Déplacez le fichier dans votre espace de stockage "project"<sup>[1](#footnote1)</sup>.
    
        ssh <username>@phoenix.calculquebec.cloud
-       (plus necessaire) mv tinyimagenet.tar ~/projects/def-sponsor00/$USER
+       mv tinyimagenet.tar ~/projects/def-sponsor00/$USER
        
    Note: `def-sponsor00` correspond au nom du compte de votre superviseur. Pour l'atelier on utilise un compte bidon qui s'appelle `def-sponsor00`. Pour plus de détails, référez-vous à notre [documentation sur l'espace project](https://docs.computecanada.ca/wiki/Project_layout/fr).
 
@@ -57,11 +61,17 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 À cette étape, il s'agit de trouver la bonne séquence de commandes qui permet d'effectuer correctement l'entraînement
 sans supervision. Une fois cette séquence trouvée, on en fera un script (section suivante).
 
-1. Soumission d'une tâche interactive. Demandez 4 CPUs, 22GB de RAM et un GPU, pour une heure:
+1. Soumission d'une tâche interactive. Demandez 4 CPUs, 22GB de RAM et un GPU, pour dix minutes:
 
-       salloc --cpus-per-task=4 --mem=22000M --gres=gpu:1 --time=1:00:00
+       salloc --cpus-per-task=4 --mem=22000M --gres=gpu:1 --time=0:10:00
 
    Vous êtes maintenant sur un noeud de calcul, dans une tâche interactive.
+   
+   Notes:
+   
+   * Vous serez déconnecté du noeud de calcul après 10 minutes.
+   * Remarquez que le prompt a changé, avant c'était `username@login1`, maintenant c'est `username@nodeX` où `X` varie.
+   
 
 2. Chargez les [modules](https://docs.computecanada.ca/wiki/Utiliser_des_modules) dont nous aurons besoin:
 
@@ -111,7 +121,7 @@ le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y le
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=22000M
 #SBATCH --gres=gpu:1
-#SBATCH --time=00-01:00:00  # DD-HH:MM:SS
+#SBATCH --time=00-00:10:00  # DD-HH:MM:SS
 ```
 Ces lignes vont remplacer les arguments à la commande `salloc` utilisée ci-haut.
 
@@ -136,7 +146,7 @@ cd ..
 # Ajout qui sera utile pour la suite. Démarre TensorBoard en arrière plan.
 tensorboard --logdir=lightning_logs/ --host 0.0.0.0 --port 6006 &
 
-python ~/atelier-dl-cc/train.py ./data
+python ~/atelier-dl-cc/train.py ./data --epochs 5
 ```
 
 Pour terminer, ajoutez les lignes suivantes. Elles servent à conserver les résultats de l'entraînement, qui autrement seraient
@@ -180,18 +190,20 @@ Vérifiez que % d'utilisation (`GPU-Util`) ne reste pas à zéro. Faites `Ctrl+C
 
 ### Suivre les métriques avec _Tensorboard_
 
-Vérifiez le nom du noeud sur lequel la tâche roule. Ce sera sous la colonne NODELIST, et ça ressemblera à `nodeX`.
+1. Vérifiez le nom du noeud sur lequel la tâche roule. Ce sera sous la colonne NODELIST, et ça ressemblera à `nodeX`.
 
     sq
 
-Ouvrez un nouvel onglet de terminal local, et exécutez ce qui suit (en remplaçant les variables). N'exécutez pas cette commande dans votre session ssh sur phoenix, mais bien dans un terminal local sur votre ordinateur. Il suffit normalement d'ouvrir un nouvel onglet.
+2. Ouvrez un nouvel onglet de terminal local (pas sur le serveur). Avec MobaXterm, il suffit d'ouvrir un nouvel onglet. L'onglet sera affiché comme `/home/mobaxterm` au lieu de `phoenix.calculquebec.cloud`.
 
-    ssh -N -f -L localhost:6006:<id_noeud>:6006 <username>@phoenix.calculquebec.cloud
+3. Exécutez ce qui suit (remplacez `nodeX` par ce que vous avez trouvé à l'étape 1):
+
+    ssh -N -f -L localhost:6006:nodeX:6006 <username>@phoenix.calculquebec.cloud
 
 Notes:
 
 * Cette commande ne retourne rien si tout se passe bien.
-* Vous devrez peut-être changer le port 6006 pour un autre si vous avez l'erreur `Address already in use`.
+* Vous devrez changer le port 6006 pour un autre si vous avez l'erreur `Address already in use`. Essayez 6007, 6008...
 
 Finalement, ouvrez votre navigateur internet à l'adresse `localhost:6006`.
 
