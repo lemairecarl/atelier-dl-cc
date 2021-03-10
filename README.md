@@ -219,7 +219,7 @@ Commençons un nouveau script à partir de l'ancien:
 
     cp train.sh hpsearch.sh
     
-Ouvrez le nouveau script, et remplacez les lignes de `python...` jusqu'à la fin, par ceci:
+Ouvrez le nouveau script, et remplacez les lignes de `tensorboard...` jusqu'à la fin, par ceci:
 
     OUTDIR=~/projects/def-sponsor00/$USER/out/$SLURM_JOB_ID
     python ~/atelier-dl-cc/main.py ./data --save-path $OUTDIR --epochs 10 --wd $HP_WEIGHT_DECAY
