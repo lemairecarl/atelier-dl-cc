@@ -221,8 +221,9 @@ Commençons un nouveau script à partir de l'ancien:
     
 Ouvrez le nouveau script, et remplacez les lignes de `tensorboard...` jusqu'à la fin, par ceci:
 
+    tensorboard --logdir=~/projects/def-sponsor00/$USER/out --host 0.0.0.0 --port 0 &
     OUTDIR=~/projects/def-sponsor00/$USER/out/$SLURM_JOB_ID
-    python ~/atelier-dl-cc/main.py ./data --save-path $OUTDIR --epochs 10 --wd $HP_WEIGHT_DECAY
+    python ~/atelier-dl-cc/train.py ./data --save-path $OUTDIR --epochs 10 --wd $HP_WEIGHT_DECAY
     
 Note: ici, les fichier de sortie seront écrits directement dans le stockage "project".
 
@@ -240,25 +241,23 @@ Sur le noeud de login, allez dans le dossier qui contient les expériences à co
     cd ~/projects/def-sponsor00/$USER/out
     find . -name 'events.out.tfevents*'
 
-Installez TensorBoard sur le noeud de login:
+Notez le JOBID et le NODELIST d'une des tâches:
 
-    module load python/3.8
-    virtualenv tbenv
-    source tbenv/bin/activate
-    pip install tensorboard
+    sq
 
-Lancez TensorBoard en spécifiant le bon dossier:
+Éxecutez la commande suivante toutes les 30s, jusqu'à ce qu'elle retourne quelque chose (rien ne s'affiche si la tâche est encore en démarrage):
 
-    source tbenv/bin/activate
-    tensorboard --logdir=~/projects/def-sponsor00/$USER/out --host 0.0.0.0 --port 6006
+    cat slurm-<JOBID>.out | grep TensorBoard
     
-Créez un tunnel entre votre ordinateur et le **noeud de connexion**. Comme auparavant, exécutez cette commande dans un nouvel onglet de terminal local.
+Vous verrez quelque chose comme suit:
 
-    ssh -N -f -L localhost:6006:localhost:6006 <username>@phoenix.calculquebec.cloud
+    TensorBoard 2.4.1 at http://0.0.0.0:PORT/ (Press CTRL+C to quit)
     
-Notez la différence avec la commande utilisée plus tôt: `localhost` au lieu de `<node_id>`.
+Dans un nouvel onglet **local**, exécutez ce qui suit (remplacez `nodeX` et `PORT` par ce que vous avez trouvé plus haut):
 
-Vous pouvez finalement ouvrir votre navigateur à `localhost:6006`.
+       ssh -N -f -L localhost:PORT:nodeX:PORT <username>@phoenix.calculquebec.cloud
+
+Vous pouvez finalement ouvrir votre navigateur à `localhost:PORT`.
 
 ## Remarques
 
