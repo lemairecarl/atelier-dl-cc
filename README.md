@@ -106,7 +106,9 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
        cd $SLURM_TMPDIR
        python ~/atelier-dl-cc/train.py ./data
    
-   Si vous voyez des barres de progression apparaître, bravo! L'entraînement est lancé avec succès. Vous pouvez le stopper.
+   Si vous voyez des barres de progression apparaître, bravo! L'entraînement est lancé avec succès. Vous pouvez le stopper, avec `Ctrl+C`.
+   
+8. Pour quitter la tâche interactive, utilisez la commande `exit`. Remarquez que votre prompt redevient `username@login1`.
    
 8. Notez les commandes que vous avez utilisés ici, car elles iront dans le script à la
    section suivante.
