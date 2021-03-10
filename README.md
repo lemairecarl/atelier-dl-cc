@@ -146,7 +146,7 @@ tar xf tinyimagenet.tar
 cd ..
 
 # Ajout qui sera utile pour la suite. Démarre TensorBoard en arrière plan.
-tensorboard --logdir=lightning_logs/ --host 0.0.0.0 --port 6006 &
+tensorboard --logdir=lightning_logs/ --host 0.0.0.0 --port 0 &
 
 python ~/atelier-dl-cc/train.py ./data --epochs 5
 ```
@@ -192,22 +192,27 @@ Vérifiez que % d'utilisation (`GPU-Util`) ne reste pas à zéro. Faites `Ctrl+C
 
 ### Suivre les métriques avec _Tensorboard_
 
-1. Vérifiez le nom du noeud sur lequel la tâche roule. Ce sera sous la colonne NODELIST, et ça ressemblera à `nodeX`.
+1. Vérifiez le `JOBID` et le `NODELIST` de votre tâche. C'est, respectivement, un nombre, et quelque chose comme `nodeX` où `X` varie.
 
        sq
+       
+2. Vérifiez le port de TensorBoard. Éxecutez la commande suivante toutes les 30s, jusqu'à ce qu'elle retourne quelque chose (rien ne s'affiche si la tâche est encore en démarrage):
+
+       cat slurm-<JOBID>.out | grep TensorBoard
+    
+   Vous verrez quelque chose comme suit, où `PORT` est le nombre qui nous intéresse.
+
+       TensorBoard 2.4.1 at http://0.0.0.0:PORT/ (Press CTRL+C to quit)
 
 2. Ouvrez un nouvel onglet de terminal local (pas sur le serveur). Avec MobaXterm, il suffit d'ouvrir un nouvel onglet. L'onglet sera affiché comme `/home/mobaxterm` au lieu de `phoenix.calculquebec.cloud`.
 
-3. Exécutez ce qui suit (remplacez `nodeX` par ce que vous avez trouvé à l'étape 1):
+3. Exécutez ce qui suit (remplacez `nodeX` et `PORT` par ce que vous avez trouvé plus haut):
 
-       ssh -N -f -L localhost:6006:nodeX:6006 <username>@phoenix.calculquebec.cloud
+       ssh -N -f -L localhost:PORT:nodeX:PORT <username>@phoenix.calculquebec.cloud
 
-Notes:
+**Note:** Cette commande ne retourne rien si tout se passe bien.
 
-* Cette commande ne retourne rien si tout se passe bien.
-* Vous devrez changer le port 6006 pour un autre si vous avez l'erreur `Address already in use`. Essayez 6007, 6008...
-
-Finalement, ouvrez votre navigateur internet à l'adresse `localhost:6006`.
+Finalement, ouvrez votre navigateur internet à l'adresse `localhost:PORT`.
 
 ## 4. Recherche d'hyperparamètres
 
