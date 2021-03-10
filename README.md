@@ -145,11 +145,8 @@ cp ~/projects/def-sponsor00/$USER/tinyimagenet.tar .
 tar xf tinyimagenet.tar
 cd ..
 
-# Ajout qui sera utile pour la suite. Démarre TensorBoard en arrière plan.
-tensorboard --logdir=lightning_logs/ --host 0.0.0.0 --port 0 &
-
 OUTDIR=~/projects/def-sponsor00/$USER/out/$SLURM_JOB_ID
-python ~/atelier-dl-cc/train.py ./data --epochs 5 --save-path $OUTDIR
+python ~/atelier-dl-cc/train.py ./data --save-path $OUTDIR --epochs 10
 ```
 
 **REMARQUE:** Les dernières lignes sont un peu différentes, veuillez utiliser cette nouvelle version.
