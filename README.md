@@ -264,6 +264,30 @@ Dans un nouvel onglet **local**, exécutez ce qui suit (remplacez `nodeX` et `PO
 
 Vous pouvez finalement ouvrir votre navigateur à `localhost:PORT`.
 
+### Utiliser TensorBoard lorsque vos tâches sont terminées
+
+Si aucune de vos tâches n'est en cours d'exécution, les instructions ci-haut pour TensorBoard ne fonctionneront pas. Utilisez plutôt ce qui suit:
+
+1. Créez un environnement python dans votre home (si vous ne l'avez pas déjà). Vous y installerez TensorBoard:
+
+       module load python/3.8
+       virtualenv env
+       source env/bin/activate
+       pip install tensorboard
+
+2. Lancez TensorBoard
+
+       source env/bin/activate  # si pas déja fait
+       tensorboard --logdir projects/def-sponsor00/$USER/out --host 0.0.0.0 --port 0
+
+   Notez le port affiché par TensorBoard.
+
+3. Dans un nouvel onglet **local**, exécutez ce qui suit (remplacez `PORT`):
+
+       ssh -N -f -L localhost:PORT:login1:PORT <username>@phoenix.calculquebec.cloud
+       
+4. Vous pouvez ouvrir votre navigateur web à `localhost:PORT`.
+
 ## Remarques
 
 * Dans `train.sh`, ne mettez pas de ligne `salloc`.
