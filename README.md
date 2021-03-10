@@ -194,13 +194,13 @@ Vérifiez que % d'utilisation (`GPU-Util`) ne reste pas à zéro. Faites `Ctrl+C
 
 1. Vérifiez le nom du noeud sur lequel la tâche roule. Ce sera sous la colonne NODELIST, et ça ressemblera à `nodeX`.
 
-    sq
+       sq
 
 2. Ouvrez un nouvel onglet de terminal local (pas sur le serveur). Avec MobaXterm, il suffit d'ouvrir un nouvel onglet. L'onglet sera affiché comme `/home/mobaxterm` au lieu de `phoenix.calculquebec.cloud`.
 
 3. Exécutez ce qui suit (remplacez `nodeX` par ce que vous avez trouvé à l'étape 1):
 
-    ssh -N -f -L localhost:6006:nodeX:6006 <username>@phoenix.calculquebec.cloud
+       ssh -N -f -L localhost:6006:nodeX:6006 <username>@phoenix.calculquebec.cloud
 
 Notes:
 
@@ -221,6 +221,7 @@ Commençons un nouveau script à partir de l'ancien:
     
 Ouvrez le nouveau script, et remplacez les lignes de `python...` jusqu'à la fin, par ceci:
 
+    OUTDIR=~/projects/def-sponsor00/$USER/out/$SLURM_JOB_ID
     python ~/atelier-dl-cc/main.py ./data --save-path $OUTDIR --epochs 10 --wd $HP_WEIGHT_DECAY
     
 Note: ici, les fichier de sortie seront écrits directement dans le stockage "project".
