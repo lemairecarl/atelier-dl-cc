@@ -240,33 +240,11 @@ Finalement, vous pouvez lancer les différents essais comme suit:
 
 ### Comparer les choix d'hyperparamètres
 
-Sur le noeud de login, allez dans le dossier qui contient les expériences à comparer, et vérifiez que les fichiers
+1. Sur le noeud de login, allez dans le dossier qui contient les expériences à comparer, et vérifiez que les fichiers
 `events.out.tfevents*` sont présents. Si `find` n'affiche rien, c'est mauvais signe.
 
-    cd ~/projects/def-sponsor00/$USER/out
-    find . -name 'events.out.tfevents*'
-
-Notez le JOBID et le NODELIST d'une des tâches:
-
-    sq
-
-Éxecutez la commande suivante toutes les 30s, jusqu'à ce qu'elle retourne quelque chose (rien ne s'affiche si la tâche est encore en démarrage):
-
-    cat slurm-<JOBID>.out | grep TensorBoard
-    
-Vous verrez quelque chose comme suit:
-
-    TensorBoard 2.4.1 at http://0.0.0.0:PORT/ (Press CTRL+C to quit)
-    
-Dans un nouvel onglet **local**, exécutez ce qui suit (remplacez `nodeX` et `PORT` par ce que vous avez trouvé plus haut):
-
-       ssh -N -f -L localhost:PORT:nodeX:PORT <username>@phoenix.calculquebec.cloud
-
-Vous pouvez finalement ouvrir votre navigateur à `localhost:PORT`.
-
-### Utiliser TensorBoard lorsque vos tâches sont terminées
-
-Si aucune de vos tâches n'est en cours d'exécution, les instructions ci-haut pour TensorBoard ne fonctionneront pas. Utilisez plutôt ce qui suit:
+       cd ~/projects/def-sponsor00/$USER/out
+       find . -name 'events.out.tfevents*'
 
 1. Créez un environnement python dans votre home (si vous ne l'avez pas déjà). Vous y installerez TensorBoard:
 
