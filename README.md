@@ -171,6 +171,10 @@ Pour voir la sortie, utilisez le programme `less`, qui vous permet d'afficher da
     
 Utiliser "Page Up" et "Page Down" pour naviguer, et "q" pour quitter.
 
+Pour afficher les 10 dernières lignes du fichier, utilisez ceci:
+
+    tail slurm-XXXX.out
+
 ### Vérifier que le GPU est utilisé
 
 Vérifiez d'abord quel est le _job ID_ de votre tâche:
