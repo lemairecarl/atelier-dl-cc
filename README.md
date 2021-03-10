@@ -148,17 +148,11 @@ cd ..
 # Ajout qui sera utile pour la suite. Démarre TensorBoard en arrière plan.
 tensorboard --logdir=lightning_logs/ --host 0.0.0.0 --port 0 &
 
-python ~/atelier-dl-cc/train.py ./data --epochs 5
-```
-
-Pour terminer, ajoutez les lignes suivantes. Elles servent à conserver les résultats de l'entraînement, qui autrement seraient
-effacées lors de la fin de la tâche.
-
-```bash
 OUTDIR=~/projects/def-sponsor00/$USER/out/$SLURM_JOB_ID
-mkdir -p $OUTDIR
-cp -r lightning_logs/version*/* $OUTDIR
+python ~/atelier-dl-cc/train.py ./data --epochs 5 --save-path $OUTDIR
 ```
+
+**REMARQUE:** Les dernières lignes sont un peu différentes, veuillez utiliser cette nouvelle version.
 
 Enregistrez le fichier, et soumettez-le. **Note: sbatch doit toujours être appelé à partir d'un noeud de connexion (login).**
 
@@ -192,27 +186,29 @@ Vérifiez que % d'utilisation (`GPU-Util`) ne reste pas à zéro. Faites `Ctrl+C
 
 ### Suivre les métriques avec _Tensorboard_
 
-1. Vérifiez le `JOBID` et le `NODELIST` de votre tâche. C'est, respectivement, un nombre, et quelque chose comme `nodeX` où `X` varie.
+1. Créez un environnement python dans votre home. Vous y installerez TensorBoard:
 
-       sq
-       
-2. Vérifiez le port de TensorBoard. Éxecutez la commande suivante toutes les 30s, jusqu'à ce qu'elle retourne quelque chose (rien ne s'affiche si la tâche est encore en démarrage):
+       module load python/3.8
+       virtualenv env
+       source env/bin/activate
+       pip install tensorboard
 
-       cat slurm-<JOBID>.out | grep TensorBoard
-    
-   Vous verrez quelque chose comme suit, où `PORT` est le nombre qui nous intéresse.
+2. Lancez TensorBoard
 
+       source env/bin/activate  # si pas déja fait
+       tensorboard --logdir projects/def-sponsor00/$USER/out --host 0.0.0.0 --port 0
+
+   Notez le port affiché par TensorBoard:
+   
        TensorBoard 2.4.1 at http://0.0.0.0:PORT/ (Press CTRL+C to quit)
 
-2. Ouvrez un nouvel onglet de terminal local (pas sur le serveur). Avec MobaXterm, il suffit d'ouvrir un nouvel onglet. L'onglet sera affiché comme `/home/mobaxterm` au lieu de `phoenix.calculquebec.cloud`.
+3. Dans un nouvel onglet **local**, exécutez ce qui suit (remplacez `PORT`):
 
-3. Exécutez ce qui suit (remplacez `nodeX` et `PORT` par ce que vous avez trouvé plus haut):
-
-       ssh -N -f -L localhost:PORT:nodeX:PORT <username>@phoenix.calculquebec.cloud
-
-**Note:** Cette commande ne retourne rien si tout se passe bien.
-
-Finalement, ouvrez votre navigateur internet à l'adresse `localhost:PORT`.
+       ssh -N -f -L localhost:PORT:login1:PORT <username>@phoenix.calculquebec.cloud
+       
+   Note: cette commande ne retourne rien si tout va bien.
+       
+4. Vous pouvez ouvrir votre navigateur web à `localhost:PORT`.
 
 ## 4. Recherche d'hyperparamètres
 
@@ -246,14 +242,7 @@ Finalement, vous pouvez lancer les différents essais comme suit:
        cd ~/projects/def-sponsor00/$USER/out
        find . -name 'events.out.tfevents*'
 
-1. Créez un environnement python dans votre home (si vous ne l'avez pas déjà). Vous y installerez TensorBoard:
-
-       module load python/3.8
-       virtualenv env
-       source env/bin/activate
-       pip install tensorboard
-
-2. Lancez TensorBoard
+2. Lancez TensorBoard (utilisez l'environnement python fait précédemment):
 
        source env/bin/activate  # si pas déja fait
        tensorboard --logdir projects/def-sponsor00/$USER/out --host 0.0.0.0 --port 0
