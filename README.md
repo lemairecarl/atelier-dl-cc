@@ -56,6 +56,8 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 
        git clone https://github.com/lemairecarl/atelier-dl-cc.git
 
+**NOTE** pour les utilisateurs de MobaXterm: Pour coller du texte dans le terminal, vous pouvez faire clic-droit. Pour copier du texte, suffit de le sélectionner avec la souris. Tout texte sélectionné dans le terminal sera automatiquement copié.
+
 ## 2. Essayer avec une tâche interactive
 
 À cette étape, il s'agit de trouver la bonne séquence de commandes qui permet d'effectuer correctement l'entraînement
