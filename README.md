@@ -201,7 +201,7 @@ Vérifiez que % d'utilisation (`GPU-Util`) ne reste pas à zéro. Faites `Ctrl+C
        source env/bin/activate  # si pas déja fait
        tensorboard --logdir ~/projects/def-sponsor00/$USER/out --host 0.0.0.0 --port 0
        
-   **Note:** Ici on lance TensorBoard sur un noeud de connexion. C'est plus simple à expliquer dans un atelier, mais ce n'est pas recommandé par Calcul Canada (CC). CC demande à ses utilisateurs de lancer TensorBoard sur les noeuds de calcul. Veuillez vous référer à la [documentation de CC à ce sujet](https://docs.computecanada.ca/wiki/TensorFlow/fr#TensorBoard).
+   >**Note:** Ici on lance TensorBoard sur un noeud de connexion. C'est plus simple à expliquer dans un atelier, mais ce n'est pas recommandé par Calcul Canada (CC). CC demande à ses utilisateurs de lancer TensorBoard sur les noeuds de calcul. Veuillez vous référer à la [documentation de CC à ce sujet](https://docs.computecanada.ca/wiki/TensorFlow/fr#TensorBoard).
 
    Notez le port affiché par TensorBoard:
    
