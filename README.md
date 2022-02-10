@@ -207,7 +207,7 @@ Vérifiez que % d'utilisation (`GPU-Util`) ne reste pas à zéro. Faites `Ctrl+C
    
        TensorBoard 2.4.1 at http://0.0.0.0:PORT/ (Press CTRL+C to quit)
 
-3. Dans un nouvel onglet **local**, exécutez ce qui suit (remplacez `PORT`):
+3. Créez un tunnel SSH. Dans un nouvel onglet **local**, exécutez ce qui suit (remplacez `PORT`):
 
        ssh -N -f -L localhost:PORT:login1:PORT <username>@phoenix.calculquebec.cloud
        
