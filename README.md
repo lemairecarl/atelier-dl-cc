@@ -17,11 +17,11 @@ La présente version de l'atelier est conçue pour le cours IFT780 donné à l'U
 
 * **Sous Windows:**
     * [Téléchargez MobaXterm ici](https://mobaxterm.mobatek.net/)
-    * Pour vous connecter à un serveur auquel vous ne vous êtes pas connecté auparavant : sous Sessions->New session, sélectionnez SSH puis entrez l'adresse du serveur (`phoenix.calculquebec.cloud`) et votre nom d'utilisateur (s'il y a lieu, cochez Specify username). Cliquez sur OK. MobaXTerm enregistre ces renseignements pour les connexions ultérieures au serveur et établit la connexion SSH.
+    * Pour vous connecter à un serveur auquel vous ne vous êtes pas connecté auparavant : sous Sessions->New session, sélectionnez SSH puis entrez l'adresse du serveur (`ift780.calculquebec.cloud`) et votre nom d'utilisateur (s'il y a lieu, cochez Specify username). Cliquez sur OK. MobaXTerm enregistre ces renseignements pour les connexions ultérieures au serveur et établit la connexion SSH.
 
 * **Sous Linux/MacOS:** Ouvrez un terminal, et lancez la commande suivante:
 
-       ssh <username>@phoenix.calculquebec.cloud
+       ssh <username>@ift780.calculquebec.cloud
 
 Une fois connecté au serveur, vous pouvez:
 * Préparer vos données
@@ -38,7 +38,7 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
       * **Sous Windows avec MobaXterm:** Vous devriez voir un onglet "sftp" à gauche du terminal. Les fichiers sur le serveur s'affichent à cet endroit. Pour le fichier, faites simplement un glisser-déposer (drag and drop) dans cette zone.
       * **Sous Linux/MacOS:** Dans un terminal **sur votre ordinateur (pas sur le serveur)**, exécutez ce qui suit:
        
-       scp tinyimagenet.tar <username>@phoenix.calculquebec.cloud:
+       scp tinyimagenet.tar <username>@ift780.calculquebec.cloud:
        
    Note: Le `:` à la fin de la ligne est important.
    
@@ -46,7 +46,7 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 
 3. Déplacez le fichier dans votre espace de stockage "project"<sup>[1](#footnote1)</sup>.
    
-       ssh <username>@phoenix.calculquebec.cloud
+       ssh <username>@ift780.calculquebec.cloud
        mv tinyimagenet.tar ~/projects/def-sponsor00/$USER
        
    Note: `def-sponsor00` correspond au nom du compte de votre superviseur. Pour l'atelier on utilise un compte bidon qui s'appelle `def-sponsor00`. Pour plus de détails, référez-vous à notre [documentation sur l'espace project](https://docs.computecanada.ca/wiki/Project_layout/fr).
@@ -213,7 +213,7 @@ Vérifiez que % d'utilisation (`GPU-Util`) ne reste pas à zéro. Faites `Ctrl+C
 
 3. Créez un tunnel SSH. Dans un nouvel onglet **local**, exécutez ce qui suit (remplacez `PORT`):
 
-       ssh -N -f -L localhost:PORT:login1:PORT <username>@phoenix.calculquebec.cloud
+       ssh -N -f -L localhost:PORT:login1:PORT <username>@ift780.calculquebec.cloud
        
    Note: cette commande ne retourne rien si tout va bien.
        
