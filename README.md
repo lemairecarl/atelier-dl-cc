@@ -63,9 +63,9 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 À cette étape, il s'agit de trouver la bonne séquence de commandes qui permet d'effectuer correctement l'entraînement
 sans supervision. Une fois cette séquence trouvée, on en fera un script (section suivante).
 
-1. Soumission d'une tâche interactive. Demandez 4 CPUs, 22GB de RAM et un GPU, pour dix minutes:
+1. Soumission d'une tâche interactive. Demandez 4 CPUs et 3GB de RAM, pour dix minutes:
 
-       salloc --cpus-per-task=4 --mem=22000M --time=0:10:00
+       salloc --cpus-per-task=4 --mem=3G --time=0:10:00
 
    Vous êtes maintenant sur un noeud de calcul, dans une tâche interactive.
    
@@ -103,10 +103,10 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
        cp ~/projects/def-sponsor00/$USER/tinyimagenet.tar .
        tar xf tinyimagenet.tar
 
-7. Vous pouvez maintenant lancer l'entraînement:
+7. Vous pouvez maintenant lancer l'entraînement (sans utiliser de GPU):
 
        cd $SLURM_TMPDIR
-       python ~/atelier-dl-cc/train.py ./data
+       python ~/atelier-dl-cc/train.py ./data --gpus 0
    
    Si vous voyez des barres de progression apparaître, bravo! L'entraînement est lancé avec succès. Notez le temps estimé pour l'epoch, qui devrait être autour de 13 minutes.
    
@@ -125,11 +125,11 @@ le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y le
 ```bash
 #!/bin/bash
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=22000M
+#SBATCH --mem=3G
 #SBATCH --gres=gpu:1
 #SBATCH --time=00-00:10:00  # DD-HH:MM:SS
 ```
-Ces lignes vont remplacer les arguments à la commande `salloc` utilisée ci-haut.
+Ces lignes vont remplacer les arguments à la commande `salloc` utilisée ci-haut. Cette fois-ci, nous utilisons un GPU.
 
 Pour le paramètre `--time`, assignez une durée qui permettra d'entraîner pendant 4 epochs. Pour estimer une bonne valeur, on peut utiliser la durée d'une epoch sur CPU notée à l'étape précédente; mais divisez cette durée par 8. Un petit calcul vous permettra d'avoir un estimé raisonnable du temps requis sur GPU pour 4 epochs.
 
