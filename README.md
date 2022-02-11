@@ -117,6 +117,8 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
 
 ## 3. Soumettre une tâche
 
+**TODO: utiliser gpu, changer --time. estimer time avec formule: train_epoch_time_cpu * num_epochs / 10**
+
 Créez le fichier `train.sh`. Vous pouvez créer le fichier sur votre laptop pour le transférer ensuite, ou vous pouvez
 le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y les lignes suivantes:
 
