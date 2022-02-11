@@ -65,7 +65,7 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
 
 1. Soumission d'une tâche interactive. Demandez 4 CPUs, 22GB de RAM et un GPU, pour dix minutes:
 
-       salloc --cpus-per-task=4 --mem=22000M --gres=gpu:1 --time=0:10:00
+       salloc --cpus-per-task=4 --mem=22000M --time=0:10:00
 
    Vous êtes maintenant sur un noeud de calcul, dans une tâche interactive.
    
@@ -108,7 +108,9 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
        cd $SLURM_TMPDIR
        python ~/atelier-dl-cc/train.py ./data
    
-   Si vous voyez des barres de progression apparaître, bravo! L'entraînement est lancé avec succès. Vous pouvez le stopper, avec `Ctrl+C`.
+   Si vous voyez des barres de progression apparaître, bravo! L'entraînement est lancé avec succès. Notez le temps estimé pour l'epoch, qui devrait être autour de 13 minutes.
+   
+   Ensuite, vous pouvez stopper l'entraînement, avec `Ctrl+C`.
    
 8. Pour quitter la tâche interactive, utilisez la commande `exit`. Remarquez que votre prompt redevient `username@login1`.
    
@@ -116,8 +118,6 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
    section suivante.
 
 ## 3. Soumettre une tâche
-
-**TODO: utiliser gpu, changer --time. estimer time avec formule: train_epoch_time_cpu * num_epochs / 10**
 
 Créez le fichier `train.sh`. Vous pouvez créer le fichier sur votre laptop pour le transférer ensuite, ou vous pouvez
 le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y les lignes suivantes:
@@ -130,6 +130,8 @@ le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y le
 #SBATCH --time=00-00:10:00  # DD-HH:MM:SS
 ```
 Ces lignes vont remplacer les arguments à la commande `salloc` utilisée ci-haut.
+
+Pour le paramètre `--time`, assignez une durée qui permettra d'entraîner pendant 4 epochs. Pour estimer une bonne valeur, on peut utiliser la durée d'une epoch sur CPU notée à l'étape précédente; mais divisez cette durée par 8. Un petit calcul vous permettra d'avoir un estimé raisonnable du temps requis sur GPU pour 4 epochs.
 
 Ensuite, ajoutez la séquence de commandes que vous avez validée dans la section prédécente. Ça devrait ressembler à ceci:
 
