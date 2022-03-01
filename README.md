@@ -44,12 +44,16 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
    
 3. Assurez-vous que le fichier a bien été transféré en faisant un `ls` sur le serveur.
 
-3. Déplacez le fichier dans votre espace de stockage "project"<sup>[1](#footnote1)</sup>.
+3. Déplacez le fichier dans votre espace de stockage "project".
    
        ssh <username>@ift780.calculquebec.cloud
-       mv tinyimagenet.tar ~/projects/def-sponsor00/$USER
+       cd tinyimagenet.tar ~/projects/def-sponsor00/$USER
+       rm tinyimagenet.tar
        
-   Note: `def-sponsor00` correspond au nom du compte de votre superviseur. Pour l'atelier on utilise un compte bidon qui s'appelle `def-sponsor00`. Pour plus de détails, référez-vous à notre [documentation sur l'espace project](https://docs.computecanada.ca/wiki/Project_layout/fr).
+   Notes: 
+   
+   * `def-sponsor00` correspond au nom du compte de votre superviseur. Pour l'atelier on utilise un compte bidon qui s'appelle `def-sponsor00`. Pour plus de détails, référez-vous à notre [documentation sur l'espace project](https://docs.computecanada.ca/wiki/Project_layout/fr).
+   * Lorsqu'on veut déplacer de l'espace "home" vers "project", il faut toujours copier (`cp`) et non déplacer (`mv`). Sinon des problèmes de quota d'espace peuvent survenir.
 
 4. Clonez le code dans votre `home` (`home/<username>`, c'est le dossier dans lequel vous arrivez lors d'une connexion
    `ssh`):
