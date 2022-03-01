@@ -112,7 +112,7 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
        cd $SLURM_TMPDIR
        python ~/atelier-dl-cc/train.py ./data --gpus 0
    
-   Si vous voyez des barres de progression apparaître, bravo! L'entraînement est lancé avec succès. Notez le temps estimé pour l'epoch, qui devrait être autour de 13 minutes.
+   Si vous voyez des barres de progression apparaître, bravo! L'entraînement est lancé avec succès. Notez le temps estimé pour l'epoch, qui devrait être autour de 15 minutes.
    
    Ensuite, vous pouvez stopper l'entraînement, avec `Ctrl+C`.
    
@@ -131,7 +131,7 @@ le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y le
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=3G
 #SBATCH --gres=gpu:1
-#SBATCH --time=00-00:10:00  # DD-HH:MM:SS
+#SBATCH --time=00-00:00:00  # DD-HH:MM:SS
 ```
 Ces lignes vont remplacer les arguments à la commande `salloc` utilisée ci-haut. Cette fois-ci, nous utilisons un GPU.
 
