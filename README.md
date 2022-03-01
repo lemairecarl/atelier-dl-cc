@@ -132,6 +132,8 @@ le créer directement sur le serveur, en utilisant `nano` ou `vim`. Ajoutez-y le
 #SBATCH --mem=3G
 #SBATCH --gres=gpu:1
 #SBATCH --time=00-00:00:00  # DD-HH:MM:SS
+#SBATCH --mail-type ALL
+#SBATCH --mail-user  # Entrez votre adresse email ici pour recevoir une notification quand la tâche débutera et se terminera.
 ```
 Ces lignes vont remplacer les arguments à la commande `salloc` utilisée ci-haut. Cette fois-ci, nous utilisons un GPU.
 
