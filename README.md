@@ -195,7 +195,9 @@ Ensuite, exécutez:
 
     srun --jobid=<JOBID> --pty watch nvidia-smi
     
-Vérifiez que % d'utilisation (`GPU-Util`) ne reste pas à zéro. Faites `Ctrl+C` pour quitter.
+Vérifiez que % d'utilisation (`GPU-Util`) ne reste pas à zéro. Ça peut prendre quelques minutes avant que l'entraînement démarre.
+
+Faites `Ctrl+C` pour quitter.
 
 ### Suivre les métriques avec _Tensorboard_
 
