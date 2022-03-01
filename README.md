@@ -158,7 +158,7 @@ tar xf tinyimagenet.tar
 cd ..
 
 OUTDIR=~/projects/def-sponsor00/$USER/out/$SLURM_JOB_ID
-python ~/atelier-dl-cc/train.py ./data --save-path $OUTDIR --epochs 10
+python ~/atelier-dl-cc/train.py ./data --save-path $OUTDIR --epochs 4
 ```
 
 **REMARQUE:** Les dernières lignes sont un peu différentes, veuillez utiliser cette nouvelle version.
