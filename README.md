@@ -7,7 +7,7 @@ pratiques sont élaborées en détail dans les références suivantes:
 * [Guide Apprentissage Machine](https://docs.computecanada.ca/wiki/AI_and_Machine_Learning/fr)
 * [Diaporama "Using Compute Canada Clusters for Machine Learning Research"](https://docs.google.com/presentation/d/1B978yexo6nBLAVusICLCs-QKwrK1v49T3E4GjNfFLgs/edit?usp=sharing)
 
-La présente version de l'atelier est conçue pour le cours IFT780 donné à l'Université de Sherbrooke à l'hiver 2021.
+La présente version de l'atelier est conçue pour le cours IFT780 donné à l'Université de Sherbrooke à l'hiver 2022.
 
 ## 1. Préparation
 
