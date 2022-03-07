@@ -69,7 +69,7 @@ sans supervision. Une fois cette séquence trouvée, on en fera un script (secti
 
 1. Soumission d'une tâche interactive. Demandez 4 CPUs et 3GB de RAM, pour dix minutes:
 
-       salloc --cpus-per-task=4 --mem=3G --time=0:10:00
+       salloc --cpus-per-task=4 --mem=3G --time=1:00:00
 
    Vous êtes maintenant sur un noeud de calcul, dans une tâche interactive.
    
