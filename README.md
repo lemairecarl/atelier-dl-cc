@@ -269,3 +269,4 @@ Finalement, vous pouvez lancer les différents essais comme suit:
 * La commande `ssh -N -f -L localhost ...` quitte tout de suite si elle fonctionne.
 * Si en ouvrant Tensorboard, vous avez l'avertissement `Tensorflow not found`, vous pouvez l'ignorer.
 * Si votre script `train.sh` contient moins de 10 commandes, relisez les instructions.
+* Si vous avez l'erreur `Batch script contains DOS line breaks`, ouvrez votre script dans Visual Studio Code (ou Notepad++ ou autre), et changez les séparateurs de ligne de CRLF vers LF. On veut utiliser le standard Linux (`\n`). Dans VS Code, voir dans le coin inférieur droit.
