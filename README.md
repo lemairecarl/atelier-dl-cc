@@ -67,7 +67,7 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 À cette étape, il s'agit de trouver la bonne séquence de commandes qui permet d'effectuer correctement l'entraînement
 sans supervision. Une fois cette séquence trouvée, on en fera un script (section suivante).
 
-1. Soumission d'une tâche interactive. Demandez 4 CPUs et 3GB de RAM, pour dix minutes:
+1. Soumission d'une tâche interactive. Demandez 4 CPUs et 3GB de RAM:
 
        salloc --cpus-per-task=4 --mem=3G --time=1:00:00
 
