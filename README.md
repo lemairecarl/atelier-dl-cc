@@ -47,7 +47,7 @@ Pour l'instant vous n'avez ni données, ni code. Nous allons régler ça dans la
 3. Déplacez le fichier dans votre espace de stockage "project".
    
        ssh <username>@ift780.calculquebec.cloud
-       cd tinyimagenet.tar ~/projects/def-sponsor00/$USER
+       cp tinyimagenet.tar ~/projects/def-sponsor00/$USER
        rm tinyimagenet.tar
        
    Notes: 
