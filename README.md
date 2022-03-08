@@ -259,7 +259,7 @@ Finalement, vous pouvez lancer les différents essais comme suit:
 
 ## Remarques
 
-* Dans `train.sh`, ne mettez pas de ligne `salloc`.
+* Dans `train.sh`, ne mettez pas de ligne `salloc`. N'utilisez jamais `sbatch` et `salloc` ensemble.
 * Lancez la commande `sbatch` sur un noeud de login, et non sur un noeud de calcul (obtenu avec un `salloc`).
 * Vous pouvez lister vos tâches actives avec la commande `sq`, et annuler une tâche avec la commande `scancel <job_id>`.
     * "R" veut dire que la tâche est en exécution (running)
