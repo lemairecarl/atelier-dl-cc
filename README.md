@@ -1,5 +1,7 @@
 # Atelier de Deep Learning sur Calcul Canada
 
+**TODO**: Revoir les requirements pour etre compatible avec torch 1.13.1
+
 Cet atelier est basé sur les bonnes pratiques pour l'apprentissage machine sur les grappes de Calcul Canada. Ces bonnes
 pratiques sont élaborées en détail dans les références suivantes:
 
